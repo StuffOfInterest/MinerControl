@@ -42,7 +42,7 @@ namespace MinerControl.PriceEntries
 
         public int StatusCounter { get { return _statusCounter; } set { SetField(ref _statusCounter, value, () => StatusCounter, () => StatusPrint, () => TimeMiningPrint); } }
 
-        public decimal Price { get { return _price; } set { SetField(ref _price, value, () => Price, () => Earn, () => NetEarn); } }
+        public decimal Price { get { return _price; } set { SetField(ref _price, value, () => Price, () => Earn, () => Fees, () => NetEarn); } }
         public decimal Earn { get { return Price / 1000 * Hashrate / 1000; } }
         public decimal PowerCost { get { return Power / 1000 * 24 * MiningEngine.PowerCost / MiningEngine.Exchange; } }
         public virtual decimal Fees { get { return _fees; } set { SetField(ref _fees, value, () => Fees, () => NetEarn); } }

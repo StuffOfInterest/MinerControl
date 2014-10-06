@@ -11,6 +11,7 @@ namespace MinerControl
         WestHash,
         TradeMyBit,
         YAAMP,
+        WafflePool,
         Manual
     }
 }

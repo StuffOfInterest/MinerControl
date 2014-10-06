@@ -63,6 +63,7 @@
     </Compile>
     <Compile Include="Hardware\NVAPI.cs" />
     <Compile Include="PriceEntries\ManualPriceEntry.cs" />
+    <Compile Include="PriceEntries\WafflePoolPriceEntry.cs" />
     <Compile Include="Services\ManualService.cs" />
     <Compile Include="MiningEngine.cs" />
     <Compile Include="MiningModeEnum.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Services\NiceHashService.cs" />
     <Compile Include="Services\NiceHashServiceBase.cs" />
     <Compile Include="PriceEntries\PriceEntryBase.cs" />
+    <Compile Include="Services\WafflePoolService.cs" />
     <Compile Include="Utility\ProcessUtil.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

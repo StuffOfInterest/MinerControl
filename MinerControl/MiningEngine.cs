@@ -173,6 +173,7 @@ namespace MinerControl
             LoadService(new WestHashService(), data, "westhash");
             LoadService(new TradeMyBitService(), data, "trademybit");
             LoadService(new YaampService(), data, "yaamp");
+            LoadService(new WafflePoolService(), data, "wafflepool");
             LoadService(new ManualService(), data, "manual");
 
             // Set Id for each entry
