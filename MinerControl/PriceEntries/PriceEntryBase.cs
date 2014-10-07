@@ -17,7 +17,6 @@ namespace MinerControl.PriceEntries
 
         public MiningEngine MiningEngine { get; set; }
         public int Id { get; set; }
-        public ServiceEnum Service { get; set; }
         public IService ServiceEntry { get; set; }
         public string AlgoName { get; set; }
         public string Name { get { return GetAlgoDisplayName(AlgoName); } }
@@ -65,7 +64,7 @@ namespace MinerControl.PriceEntries
             }
         }
 
-        public virtual string ServicePrint { get { return Service.ToString(); } }
+        public virtual string ServicePrint { get { return ServiceEntry.ServiceEnum.ToString(); } }
 
         public string TimeMiningPrint
         {

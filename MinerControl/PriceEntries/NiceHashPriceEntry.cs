@@ -7,11 +7,6 @@ namespace MinerControl.PriceEntries
 {
     public class NiceHashPriceEntry : PriceEntryBase
     {
-        public NiceHashPriceEntry() 
-        {
-            Service = ServiceEnum.NiceHash;
-        }
-
         public int AlgorithmId { get; set; }
 
         public override decimal Fees

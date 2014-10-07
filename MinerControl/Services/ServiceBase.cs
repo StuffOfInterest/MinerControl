@@ -38,7 +38,7 @@ namespace MinerControl.Services
             OnPropertyChanged(() => TimeMiningPrint);
         }
 
-        protected IList<TEntry> PriceEntries { get { return MiningEngine.PriceEntries.Where(o => o.Service == ServiceEnum).Select(o => (TEntry)o).ToList(); } }
+        protected IList<TEntry> PriceEntries { get { return MiningEngine.PriceEntries.Where(o => o.ServiceEntry.ServiceEnum == ServiceEnum).Select(o => (TEntry)o).ToList(); } }
 
         protected string _account;
         protected string _worker;
@@ -96,7 +96,6 @@ namespace MinerControl.Services
         {
             var entry = new TEntry();
             entry.MiningEngine = MiningEngine;
-            entry.Service = ServiceEnum;
             entry.ServiceEntry = this;
 
             entry.AlgoName = item.GetString("algo");

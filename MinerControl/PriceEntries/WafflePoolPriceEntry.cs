@@ -7,11 +7,6 @@ namespace MinerControl.PriceEntries
 {
     public class WafflePoolPriceEntry : PriceEntryBase
     {
-        public WafflePoolPriceEntry()
-        {
-            Service = ServiceEnum.WafflePool;
-        }
-
         public override decimal Fees
         {
             get { return Earn * 0.02m; }
