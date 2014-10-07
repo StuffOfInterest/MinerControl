@@ -18,6 +18,7 @@ namespace MinerControl.PriceEntries
         public MiningEngine MiningEngine { get; set; }
         public int Id { get; set; }
         public ServiceEnum Service { get; set; }
+        public IService ServiceEntry { get; set; }
         public string AlgoName { get; set; }
         public string Name { get { return GetAlgoDisplayName(AlgoName); } }
 
@@ -30,7 +31,6 @@ namespace MinerControl.PriceEntries
         public string DonationCommand { get; set; }
         public string DonationArguments { get; set; }
         
-        private int _statusCounter;
         private decimal _price;
         private decimal _fees;
         private decimal _weight;
@@ -39,8 +39,6 @@ namespace MinerControl.PriceEntries
         private decimal _rejectSpeed;
         private TimeSpan _timeMining;
         private DateTime _deadTime;
-
-        public int StatusCounter { get { return _statusCounter; } set { SetField(ref _statusCounter, value, () => StatusCounter, () => StatusPrint, () => TimeMiningPrint); } }
 
         public decimal Price { get { return _price; } set { SetField(ref _price, value, () => Price, () => Earn, () => Fees, () => NetEarn); } }
         public decimal Earn { get { return Price / 1000 * Hashrate / 1000; } }
@@ -97,7 +95,9 @@ namespace MinerControl.PriceEntries
 
         public void UpdateStatus()
         {
-            StatusCounter++;
+            OnPropertyChanged(() => StatusPrint);
+            OnPropertyChanged(() => TimeMiningPrint);
+            ServiceEntry.UpdateTime();
         }
 
         #region Helpers

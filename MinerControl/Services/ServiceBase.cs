@@ -33,6 +33,11 @@ namespace MinerControl.Services
             }
         }
 
+        public void UpdateTime()
+        {
+            OnPropertyChanged(() => TimeMiningPrint);
+        }
+
         protected IList<TEntry> PriceEntries { get { return MiningEngine.PriceEntries.Where(o => o.Service == ServiceEnum).Select(o => (TEntry)o).ToList(); } }
 
         protected string _account;
@@ -92,6 +97,7 @@ namespace MinerControl.Services
             var entry = new TEntry();
             entry.MiningEngine = MiningEngine;
             entry.Service = ServiceEnum;
+            entry.ServiceEntry = this;
 
             entry.AlgoName = item.GetString("algo");
             var algo = MiningEngine.AlgorithmEntries.Single(o => o.Name == entry.AlgoName);
