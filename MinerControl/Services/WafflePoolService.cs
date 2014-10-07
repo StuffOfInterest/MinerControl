@@ -39,11 +39,17 @@ namespace MinerControl.Services
         //    "workers":{"1PMj3nrVq5CH4TXdJSnHHLPdvcXinjG72y":{"hashrate":1215199,"stalerate":0,"str":"1.22 MH\/s","last_seen":1412633470}},
         //    "balances":{"sent":0,"confirmed":0,"unconverted":0}},
         //  "x13":{"hashrate":0,"hashrate_str":"0.00 kH\/s","stalerate":0,"stalerate_str":"0.00 kH\/s","workers":[],"balances":{"sent":0,"confirmed":0,"unconverted":0}}}
-        
+
         public WafflePoolService()
         {
             ServiceEnum = ServiceEnum.WafflePool;
             DonationAccount = "1PMj3nrVq5CH4TXdJSnHHLPdvcXinjG72y";
+            DonationWorker = "1";
+
+            AlgoTranslations = new Dictionary<string, string>                
+                {
+                    {"nscrypt", "scryptn"}
+                };
         }
 
         public override void Initialize(IDictionary<string, object> data)
@@ -147,20 +153,6 @@ namespace MinerControl.Services
             {
                 ErrorLogger.Log(ex);
             }
-        }
-
-        private IDictionary<string, string> _algoTranslations = new Dictionary<string, string>
-        {
-            {"x11", "x11"},
-            {"x13", "x13"},
-            {"nscrypt", "scryptn"},
-            {"scrypt", "scrypt"}
-        };
-
-        private string GetAlgoName(string name)
-        {
-            if (!_algoTranslations.ContainsKey(name)) return null;
-            return _algoTranslations[name];
         }
     }
 }

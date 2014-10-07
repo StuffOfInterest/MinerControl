@@ -22,6 +22,11 @@ namespace MinerControl.Services
             ServiceEnum = ServiceEnum.TradeMyBit;
             DonationAccount = "MinerControl";
             DonationWorker = "1";
+
+            AlgoTranslations = new Dictionary<string, string>
+                {
+                    {"nscrypt", "scryptn"}
+                };
         }
 
         public string _apikey;
@@ -59,11 +64,8 @@ namespace MinerControl.Services
                     foreach (var rawitem in data)
                     {
                         var item = rawitem as Dictionary<string, object>;
-                        var algo = item.GetString("algo").ToLower();
-                        var translatedName = GetAlgoName(algo);
-                        if (translatedName == null) continue;
-
-                        var entry = PriceEntries.FirstOrDefault(o => o.AlgoName == translatedName);
+                        var algo = item.GetString("algo");
+                        var entry = PriceEntries.FirstOrDefault(o => o.AlgoName == GetAlgoName(algo));
                         if (entry == null) continue;
 
                         entry.Price = item["actual"].ExtractDecimal() * 1000;
@@ -102,22 +104,6 @@ namespace MinerControl.Services
             {
                 ErrorLogger.Log(ex);
             }
-        }
-
-        private IDictionary<string, string> _algoTranslations = new Dictionary<string, string>
-        {
-            {"x11", "x11"},
-            {"x13", "x13"},
-            {"nscrypt", "scryptn"},
-            {"scrypt", "scrypt"},
-            {"nist5", "nist5"},
-            {"x15", "x15"}
-        };
-
-        private string GetAlgoName(string name)
-        {
-            if (!_algoTranslations.ContainsKey(name)) return null;
-            return _algoTranslations[name];
         }
     }
 }

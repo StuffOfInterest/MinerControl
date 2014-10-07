@@ -43,6 +43,7 @@ namespace MinerControl.Services
         protected decimal _weight = 1.0m;
         protected string DonationAccount { get; set;}
         protected string DonationWorker { get; set; }
+        protected IDictionary<string, string> AlgoTranslations { get; set; }
 
         public ServiceBase()
         {
@@ -130,6 +131,12 @@ namespace MinerControl.Services
             {
                 ErrorLogger.Log(ex);
             }
+        }
+
+        protected string GetAlgoName(string name)
+        {
+            if (AlgoTranslations == null || !AlgoTranslations.ContainsKey(name)) return name;
+            return AlgoTranslations[name];
         }
     }
 }
