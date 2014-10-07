@@ -21,5 +21,6 @@ namespace MinerControl
 
         void Initialize(IDictionary<string, object> data);
         void CheckPrices();
+        void UpdateTime();
     }
 }
