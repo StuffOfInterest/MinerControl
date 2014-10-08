@@ -19,11 +19,13 @@ namespace MinerControl.Services
         public MiningEngine MiningEngine { get; set; }
         public ServiceEnum ServiceEnum { get { return _serviceEnum; } protected set { SetField(ref _serviceEnum, value, () => ServiceEnum, () => ServicePrint); } }
         public DateTime? LastUpdated { get { return _lastUpdated; } protected set { SetField(ref _lastUpdated, value, () => LastUpdated, () => LastUpdatedPrint); } }
-        public decimal Balance { get { return _balance; } protected set { SetField(ref _balance, value, () => Balance, () => BalancePrint); } }
+        public decimal Balance { get { return _balance; } protected set { SetField(ref _balance, value, () => Balance, () => BalancePrint, () => CurrencyPrint); } }
+        public decimal Currency { get { return Balance * MiningEngine.Exchange; } }
 
         public virtual string ServicePrint { get { return ServiceEnum.ToString(); } }
         public string LastUpdatedPrint { get { return LastUpdated == null ? string.Empty : LastUpdated.Value.ToString("HH:mm:ss"); } }
         public string BalancePrint { get { return Balance == 0.0m ? string.Empty : Balance.ToString("N8"); } }
+        public string CurrencyPrint { get { return Currency == 0.0m ? string.Empty : Currency.ToString("N4"); } }
         public string TimeMiningPrint
         {
             get
@@ -33,9 +35,20 @@ namespace MinerControl.Services
             }
         }
 
+        public ServiceBase()
+        {
+            DonationAccount = string.Empty;
+            DonationWorker = string.Empty;
+        }
+
         public void UpdateTime()
         {
             OnPropertyChanged(() => TimeMiningPrint);
+        }
+
+        public void UpdateExchange()
+        {
+            OnPropertyChanged(() => CurrencyPrint);
         }
 
         protected IList<TEntry> PriceEntries { get { return MiningEngine.PriceEntries.Where(o => o.ServiceEntry.ServiceEnum == ServiceEnum).Select(o => (TEntry)o).ToList(); } }
@@ -49,12 +62,6 @@ namespace MinerControl.Services
         protected string DonationAccount { get; set;}
         protected string DonationWorker { get; set; }
         protected IDictionary<string, string> AlgoTranslations { get; set; }
-
-        public ServiceBase()
-        {
-            DonationAccount = string.Empty;
-            DonationWorker = string.Empty;
-        }
 
         public abstract void Initialize(IDictionary<string, object> data);
         public abstract void CheckPrices();
@@ -121,7 +128,7 @@ namespace MinerControl.Services
             MiningEngine.PriceEntries.Add(entry);
         }
 
-        protected void LaunchChecker(string url, DownloadStringCompletedEventHandler complete)
+        protected static void LaunchChecker(string url, DownloadStringCompletedEventHandler complete)
         {
             try
             {

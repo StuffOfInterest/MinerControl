@@ -99,6 +99,12 @@ namespace MinerControl.PriceEntries
             ServiceEntry.UpdateTime();
         }
 
+        public void UpdateExchange()
+        {
+            OnPropertyChanged(() => PowerCost);
+            OnPropertyChanged(() => NetEarn);
+        }
+
         #region Helpers
 
         private readonly IDictionary<string, string> _algoNames = new Dictionary<string, string>

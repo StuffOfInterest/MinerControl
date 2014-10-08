@@ -30,20 +30,21 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle29 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle30 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnStart = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
             this.tmrPriceCheck = new System.Windows.Forms.Timer(this.components);
@@ -78,20 +79,29 @@
             this.StatusPrint = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnNhStart = new System.Windows.Forms.DataGridViewButtonColumn();
             this.dgServices = new System.Windows.Forms.DataGridView();
-            this.ServiceName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ServiceLastUpdated = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ServiceBalance = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ServiceRunning = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.gbDonation = new System.Windows.Forms.GroupBox();
             this.textDonationStart = new System.Windows.Forms.TextBox();
             this.textDonationEnd = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.ServiceName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ServiceLastUpdated = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ServiceBalance = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ServiceCurrency = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ServiceRunning = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.gbCurrency = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textCurrencyExchange = new System.Windows.Forms.TextBox();
+            this.textCurrencyBalance = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.tmrExchangeUpdate = new System.Windows.Forms.Timer(this.components);
+            this.lblCurrencySymbol = new System.Windows.Forms.Label();
             this.gbActions.SuspendLayout();
             this.gbTimes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgPrices)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgServices)).BeginInit();
             this.gbDonation.SuspendLayout();
+            this.gbCurrency.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnStart
@@ -151,7 +161,7 @@
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(102, 13);
             this.label13.TabIndex = 10;
-            this.label13.Text = "Miner Control v1.2.2";
+            this.label13.Text = "Miner Control v1.3.0";
             // 
             // notifyIcon
             // 
@@ -327,8 +337,8 @@
             // Hashrate
             // 
             this.Hashrate.DataPropertyName = "Hashrate";
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.Hashrate.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.Hashrate.DefaultCellStyle = dataGridViewCellStyle16;
             this.Hashrate.HeaderText = "Hash";
             this.Hashrate.Name = "Hashrate";
             this.Hashrate.ReadOnly = true;
@@ -339,10 +349,10 @@
             // Price
             // 
             this.Price.DataPropertyName = "Price";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle2.Format = "N6";
-            dataGridViewCellStyle2.NullValue = null;
-            this.Price.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle17.Format = "N6";
+            dataGridViewCellStyle17.NullValue = null;
+            this.Price.DefaultCellStyle = dataGridViewCellStyle17;
             this.Price.HeaderText = "Price";
             this.Price.Name = "Price";
             this.Price.ReadOnly = true;
@@ -353,10 +363,10 @@
             // Earn
             // 
             this.Earn.DataPropertyName = "Earn";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle3.Format = "N6";
-            dataGridViewCellStyle3.NullValue = null;
-            this.Earn.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle18.Format = "N6";
+            dataGridViewCellStyle18.NullValue = null;
+            this.Earn.DefaultCellStyle = dataGridViewCellStyle18;
             this.Earn.HeaderText = "Earn";
             this.Earn.Name = "Earn";
             this.Earn.ReadOnly = true;
@@ -367,9 +377,9 @@
             // Fees
             // 
             this.Fees.DataPropertyName = "Fees";
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle4.Format = "N6";
-            this.Fees.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle19.Format = "N6";
+            this.Fees.DefaultCellStyle = dataGridViewCellStyle19;
             this.Fees.HeaderText = "Fees";
             this.Fees.Name = "Fees";
             this.Fees.ReadOnly = true;
@@ -380,10 +390,10 @@
             // PowerCost
             // 
             this.PowerCost.DataPropertyName = "PowerCost";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle5.Format = "N6";
-            dataGridViewCellStyle5.NullValue = null;
-            this.PowerCost.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle20.Format = "N6";
+            dataGridViewCellStyle20.NullValue = null;
+            this.PowerCost.DefaultCellStyle = dataGridViewCellStyle20;
             this.PowerCost.HeaderText = "Power";
             this.PowerCost.Name = "PowerCost";
             this.PowerCost.ReadOnly = true;
@@ -394,10 +404,10 @@
             // NetEarn
             // 
             this.NetEarn.DataPropertyName = "NetEarn";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle6.Format = "N6";
-            dataGridViewCellStyle6.NullValue = null;
-            this.NetEarn.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle21.Format = "N6";
+            dataGridViewCellStyle21.NullValue = null;
+            this.NetEarn.DefaultCellStyle = dataGridViewCellStyle21;
             this.NetEarn.HeaderText = "Net";
             this.NetEarn.Name = "NetEarn";
             this.NetEarn.ReadOnly = true;
@@ -408,9 +418,9 @@
             // Balance
             // 
             this.Balance.DataPropertyName = "BalancePrint";
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle7.NullValue = null;
-            this.Balance.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle22.NullValue = null;
+            this.Balance.DefaultCellStyle = dataGridViewCellStyle22;
             this.Balance.HeaderText = "Balance";
             this.Balance.Name = "Balance";
             this.Balance.ReadOnly = true;
@@ -421,9 +431,9 @@
             // AcceptSpeed
             // 
             this.AcceptSpeed.DataPropertyName = "AcceptSpeedPrint";
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle8.NullValue = null;
-            this.AcceptSpeed.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle23.NullValue = null;
+            this.AcceptSpeed.DefaultCellStyle = dataGridViewCellStyle23;
             this.AcceptSpeed.HeaderText = "Accept";
             this.AcceptSpeed.Name = "AcceptSpeed";
             this.AcceptSpeed.ReadOnly = true;
@@ -433,9 +443,9 @@
             // RejectSpeed
             // 
             this.RejectSpeed.DataPropertyName = "RejectSpeedPrint";
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle9.NullValue = null;
-            this.RejectSpeed.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle24.NullValue = null;
+            this.RejectSpeed.DefaultCellStyle = dataGridViewCellStyle24;
             this.RejectSpeed.HeaderText = "Reject";
             this.RejectSpeed.Name = "RejectSpeed";
             this.RejectSpeed.ReadOnly = true;
@@ -445,8 +455,8 @@
             // TimeMining
             // 
             this.TimeMining.DataPropertyName = "TimeMiningPrint";
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.TimeMining.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.TimeMining.DefaultCellStyle = dataGridViewCellStyle25;
             this.TimeMining.HeaderText = "Running";
             this.TimeMining.Name = "TimeMining";
             this.TimeMining.ReadOnly = true;
@@ -483,8 +493,9 @@
             this.ServiceName,
             this.ServiceLastUpdated,
             this.ServiceBalance,
+            this.ServiceCurrency,
             this.ServiceRunning});
-            this.dgServices.Location = new System.Drawing.Point(514, 9);
+            this.dgServices.Location = new System.Drawing.Point(449, 9);
             this.dgServices.Name = "dgServices";
             this.dgServices.ReadOnly = true;
             this.dgServices.RowHeadersVisible = false;
@@ -492,52 +503,8 @@
             this.dgServices.ShowCellToolTips = false;
             this.dgServices.ShowEditingIcon = false;
             this.dgServices.ShowRowErrors = false;
-            this.dgServices.Size = new System.Drawing.Size(289, 140);
+            this.dgServices.Size = new System.Drawing.Size(354, 140);
             this.dgServices.TabIndex = 13;
-            // 
-            // ServiceName
-            // 
-            this.ServiceName.DataPropertyName = "ServicePrint";
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.ServiceName.DefaultCellStyle = dataGridViewCellStyle11;
-            this.ServiceName.HeaderText = "Service";
-            this.ServiceName.Name = "ServiceName";
-            this.ServiceName.ReadOnly = true;
-            this.ServiceName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.ServiceName.Width = 70;
-            // 
-            // ServiceLastUpdated
-            // 
-            this.ServiceLastUpdated.DataPropertyName = "LastUpdatedPrint";
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.ServiceLastUpdated.DefaultCellStyle = dataGridViewCellStyle12;
-            this.ServiceLastUpdated.HeaderText = "Updated";
-            this.ServiceLastUpdated.Name = "ServiceLastUpdated";
-            this.ServiceLastUpdated.ReadOnly = true;
-            this.ServiceLastUpdated.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.ServiceLastUpdated.Width = 65;
-            // 
-            // ServiceBalance
-            // 
-            this.ServiceBalance.DataPropertyName = "BalancePrint";
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.ServiceBalance.DefaultCellStyle = dataGridViewCellStyle13;
-            this.ServiceBalance.HeaderText = "Balance";
-            this.ServiceBalance.Name = "ServiceBalance";
-            this.ServiceBalance.ReadOnly = true;
-            this.ServiceBalance.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.ServiceBalance.Width = 65;
-            // 
-            // ServiceRunning
-            // 
-            this.ServiceRunning.DataPropertyName = "TimeMiningPrint";
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.ServiceRunning.DefaultCellStyle = dataGridViewCellStyle14;
-            this.ServiceRunning.HeaderText = "Running";
-            this.ServiceRunning.Name = "ServiceRunning";
-            this.ServiceRunning.ReadOnly = true;
-            this.ServiceRunning.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.ServiceRunning.Width = 65;
             // 
             // gbDonation
             // 
@@ -590,11 +557,133 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "Mining TIme";
             // 
+            // ServiceName
+            // 
+            this.ServiceName.DataPropertyName = "ServicePrint";
+            dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.ServiceName.DefaultCellStyle = dataGridViewCellStyle26;
+            this.ServiceName.HeaderText = "Service";
+            this.ServiceName.Name = "ServiceName";
+            this.ServiceName.ReadOnly = true;
+            this.ServiceName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ServiceName.Width = 70;
+            // 
+            // ServiceLastUpdated
+            // 
+            this.ServiceLastUpdated.DataPropertyName = "LastUpdatedPrint";
+            dataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.ServiceLastUpdated.DefaultCellStyle = dataGridViewCellStyle27;
+            this.ServiceLastUpdated.HeaderText = "Updated";
+            this.ServiceLastUpdated.Name = "ServiceLastUpdated";
+            this.ServiceLastUpdated.ReadOnly = true;
+            this.ServiceLastUpdated.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ServiceLastUpdated.Width = 65;
+            // 
+            // ServiceBalance
+            // 
+            this.ServiceBalance.DataPropertyName = "BalancePrint";
+            dataGridViewCellStyle28.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.ServiceBalance.DefaultCellStyle = dataGridViewCellStyle28;
+            this.ServiceBalance.HeaderText = "Balance";
+            this.ServiceBalance.Name = "ServiceBalance";
+            this.ServiceBalance.ReadOnly = true;
+            this.ServiceBalance.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ServiceBalance.Width = 65;
+            // 
+            // ServiceCurrency
+            // 
+            this.ServiceCurrency.DataPropertyName = "CurrencyPrint";
+            dataGridViewCellStyle29.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.ServiceCurrency.DefaultCellStyle = dataGridViewCellStyle29;
+            this.ServiceCurrency.HeaderText = "Currency";
+            this.ServiceCurrency.Name = "ServiceCurrency";
+            this.ServiceCurrency.ReadOnly = true;
+            this.ServiceCurrency.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ServiceCurrency.Width = 65;
+            // 
+            // ServiceRunning
+            // 
+            this.ServiceRunning.DataPropertyName = "TimeMiningPrint";
+            dataGridViewCellStyle30.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.ServiceRunning.DefaultCellStyle = dataGridViewCellStyle30;
+            this.ServiceRunning.HeaderText = "Running";
+            this.ServiceRunning.Name = "ServiceRunning";
+            this.ServiceRunning.ReadOnly = true;
+            this.ServiceRunning.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ServiceRunning.Width = 65;
+            // 
+            // gbCurrency
+            // 
+            this.gbCurrency.Controls.Add(this.label4);
+            this.gbCurrency.Controls.Add(this.lblCurrencySymbol);
+            this.gbCurrency.Controls.Add(this.label3);
+            this.gbCurrency.Controls.Add(this.textCurrencyBalance);
+            this.gbCurrency.Controls.Add(this.textCurrencyExchange);
+            this.gbCurrency.Location = new System.Drawing.Point(336, 31);
+            this.gbCurrency.Name = "gbCurrency";
+            this.gbCurrency.Size = new System.Drawing.Size(107, 96);
+            this.gbCurrency.TabIndex = 15;
+            this.gbCurrency.TabStop = false;
+            this.gbCurrency.Text = "Currency";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 17);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(55, 13);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Exchange";
+            // 
+            // textCurrencyExchange
+            // 
+            this.textCurrencyExchange.Location = new System.Drawing.Point(9, 33);
+            this.textCurrencyExchange.Name = "textCurrencyExchange";
+            this.textCurrencyExchange.ReadOnly = true;
+            this.textCurrencyExchange.Size = new System.Drawing.Size(63, 20);
+            this.textCurrencyExchange.TabIndex = 1;
+            this.textCurrencyExchange.TabStop = false;
+            this.textCurrencyExchange.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // textCurrencyBalance
+            // 
+            this.textCurrencyBalance.Location = new System.Drawing.Point(9, 70);
+            this.textCurrencyBalance.Name = "textCurrencyBalance";
+            this.textCurrencyBalance.ReadOnly = true;
+            this.textCurrencyBalance.Size = new System.Drawing.Size(63, 20);
+            this.textCurrencyBalance.TabIndex = 1;
+            this.textCurrencyBalance.TabStop = false;
+            this.textCurrencyBalance.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 54);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(46, 13);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "Balance";
+            // 
+            // tmrExchangeUpdate
+            // 
+            this.tmrExchangeUpdate.Interval = 1800000;
+            this.tmrExchangeUpdate.Tick += new System.EventHandler(this.tmrExchangeUpdate_Tick);
+            // 
+            // lblCurrencySymbol
+            // 
+            this.lblCurrencySymbol.AutoSize = true;
+            this.lblCurrencySymbol.Location = new System.Drawing.Point(73, 74);
+            this.lblCurrencySymbol.Name = "lblCurrencySymbol";
+            this.lblCurrencySymbol.Size = new System.Drawing.Size(30, 13);
+            this.lblCurrencySymbol.TabIndex = 0;
+            this.lblCurrencySymbol.Text = "USD";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(815, 603);
+            this.Controls.Add(this.gbCurrency);
             this.Controls.Add(this.gbDonation);
             this.Controls.Add(this.dgServices);
             this.Controls.Add(this.dgPrices);
@@ -617,6 +706,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgServices)).EndInit();
             this.gbDonation.ResumeLayout(false);
             this.gbDonation.PerformLayout();
+            this.gbCurrency.ResumeLayout(false);
+            this.gbCurrency.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -643,10 +734,6 @@
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.DataGridView dgPrices;
         private System.Windows.Forms.DataGridView dgServices;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ServiceName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ServiceLastUpdated;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ServiceBalance;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ServiceRunning;
         private System.Windows.Forms.DataGridViewTextBoxColumn Id;
         private System.Windows.Forms.DataGridViewTextBoxColumn ServicePrint;
         private System.Windows.Forms.DataGridViewTextBoxColumn Algo;
@@ -667,6 +754,18 @@
         private System.Windows.Forms.TextBox textDonationEnd;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ServiceName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ServiceLastUpdated;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ServiceBalance;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ServiceCurrency;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ServiceRunning;
+        private System.Windows.Forms.GroupBox gbCurrency;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textCurrencyExchange;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox textCurrencyBalance;
+        private System.Windows.Forms.Timer tmrExchangeUpdate;
+        private System.Windows.Forms.Label lblCurrencySymbol;
     }
 }
 
