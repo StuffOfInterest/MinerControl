@@ -84,6 +84,7 @@
     <Compile Include="Services\YaampService.cs" />
     <Compile Include="Utility\SortableBindingList.cs" />
     <Compile Include="Utility\PropertyChangedBase.cs" />
+    <Compile Include="Utility\WebUtil.cs" />
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>

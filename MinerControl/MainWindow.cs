@@ -24,6 +24,8 @@ namespace MinerControl
         public MainWindow()
         {
             _engine.LoadConfig();
+            if (!string.IsNullOrWhiteSpace(_engine.CurrencyCode))
+                _engine.LoadExchangeRates();
 
             InitializeComponent();
         }
@@ -32,6 +34,11 @@ namespace MinerControl
         {
             RunCycle();
             UpdateGrid();
+        }
+        
+        private void tmrExchangeUpdate_Tick(object sender, EventArgs e)
+        {
+            _engine.LoadExchangeRates();
         }
 
         private void MainWindow_Shown(object sender, EventArgs e)
@@ -52,11 +59,14 @@ namespace MinerControl
                 textDonationEnd.Enabled = false;
             }
 
+            lblCurrencySymbol.Text = string.Empty;  // Avoid flashing template value when starting
+
             UpdateButtons();
             RunCycle();
             UpdateGrid(true);
             tmrPriceCheck.Enabled = true;
-
+            if (!string.IsNullOrWhiteSpace(_engine.CurrencyCode))
+                tmrExchangeUpdate.Enabled = true;
             if (Program.HasAutoStart)
             {
                 _engine.MiningMode = MiningModeEnum.Automatic;
@@ -208,6 +218,13 @@ namespace MinerControl
             textTimeRestart.Text = _engine.RestartTime.FormatTime();
             textDonationStart.Text = _engine.TimeUntilDonation.FormatTime();
             textDonationEnd.Text = _engine.TimeDuringDonation.FormatTime();
+            textCurrencyExchange.Text = _engine.Exchange.ToString("N2");
+            lblCurrencySymbol.Text = _engine.CurrencySymbol;
+            if (_engine.Services != null)
+            {
+                var balance = _engine.Services.Select(o => o.Currency).Sum();
+                textCurrencyBalance.Text = balance.ToString("N4");
+            }
         }
 
         private string ActiveTime(PriceEntryBase priceEntry)

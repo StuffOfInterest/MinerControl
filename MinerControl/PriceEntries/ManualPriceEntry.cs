@@ -7,11 +7,6 @@ namespace MinerControl.PriceEntries
 {
     public class ManualPriceEntry : PriceEntryBase
     {
-        public ManualPriceEntry()
-        {
-            Service = ServiceEnum.Manual;
-        }
-
         public decimal FeePercent { get; set; }
 
         public override decimal Fees

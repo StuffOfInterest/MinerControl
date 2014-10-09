@@ -19,6 +19,8 @@ namespace MinerControl
         private IList<IService> _services = new List<IService>();
         private decimal _powerCost;
         private decimal _exchange;
+        public string _currencyCode;
+        public string _currencySymbol;
         private PriceEntryBase _currentRunning;
         private DateTime? _startMining;
         private TimeSpan _minTime;
@@ -39,6 +41,8 @@ namespace MinerControl
         public DateTime? StartMining { get { return _startMining; } }
         public decimal PowerCost { get { return _powerCost; } }
         public decimal Exchange { get { return _exchange; } }
+        public string CurrencyCode { get { return _currencyCode; } }
+        public string CurrencySymbol { get { return _currencySymbol; } }
         public TimeSpan DeadTime { get { return _deadtime; } }
 
         public TimeSpan? RestartTime
@@ -193,6 +197,8 @@ namespace MinerControl
         {
             _powerCost = data["power"].ExtractDecimal();
             _exchange = data["exchange"].ExtractDecimal();
+            if (data.ContainsKey("currencycode"))
+                _currencyCode = data["currencycode"].ToString().ToUpper();
             _minTime = TimeSpan.FromMinutes((double)data["mintime"].ExtractDecimal());
             _maxTime = TimeSpan.FromMinutes((double)data["maxtime"].ExtractDecimal());
             _switchTime = TimeSpan.FromMinutes((double)data["switchtime"].ExtractDecimal());
@@ -445,6 +451,35 @@ namespace MinerControl
         public void MinimizeMinerWindow()
         {
             ProcessUtil.MinimizeWindow(_process);
+        }
+
+        public void LoadExchangeRates()
+        {
+            WebUtil.DownloadJson("http://blockchain.info/ticker ", ProcessExchangeRates);
+        }
+
+        private void ProcessExchangeRates(object jsonData)
+        {
+            var data = jsonData as Dictionary<string, object>;
+            if (!data.ContainsKey(_currencyCode)) return;
+            var item = data[_currencyCode] as Dictionary<string, object>;
+            var exchange = item["last"].ExtractDecimal();
+            var symbol = item["symbol"].ToString();
+            lock (this)
+            {
+                if (exchange > 0 && exchange != _exchange)
+                {
+                    _exchange = exchange;
+                    if (PriceEntries != null)
+                        foreach (var entry in PriceEntries)
+                            entry.UpdateExchange();
+                    if (Services != null)
+                        foreach (var service in Services)
+                            service.UpdateExchange();
+                }
+
+                if (!string.IsNullOrWhiteSpace(symbol)) _currencySymbol = symbol;
+            }
         }
     }
 }

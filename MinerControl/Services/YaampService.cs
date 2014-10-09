@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Web.Script.Serialization;
 using MinerControl.PriceEntries;
+using MinerControl.Utility;
 
 namespace MinerControl.Services
 {
@@ -32,79 +30,60 @@ namespace MinerControl.Services
 
         public override void CheckPrices()
         {
-            LaunchChecker("http://yaamp.com/api/status", DownloadStringCompletedPrice);
-            LaunchChecker(string.Format("http://yaamp.com/api/wallet?address={0}", _account), DownloadStringCompletedBalance);
+            WebUtil.DownloadJson("http://yaamp.com/api/status", ProcessPrices);
+            WebUtil.DownloadJson(string.Format("http://yaamp.com/api/wallet?address={0}", _account), ProcessBalances);
         }
 
-        private void DownloadStringCompletedPrice(object sender, DownloadStringCompletedEventArgs e)
+        private void ProcessPrices(object jsonData)
         {
-            try
+            var data = jsonData as Dictionary<string, object>;
+
+            lock (MiningEngine)
             {
-                var pageString = e.Result;
-                if (pageString == null) return;
-                var serializer = new JavaScriptSerializer();
-                var data = serializer.DeserializeObject(pageString) as Dictionary<string, object>;
-                lock (MiningEngine)
+                foreach (var key in data.Keys)
                 {
-                    foreach (var key in data.Keys)
-                    {
-                        var rawitem = data[key];
-                        var item = rawitem as Dictionary<string, object>;
-                        var algo = key.ToLower();
+                    var rawitem = data[key];
+                    var item = rawitem as Dictionary<string, object>;
+                    var algo = key.ToLower();
 
-                        var entry = PriceEntries.FirstOrDefault(o => o.AlgoName == algo);
-                        if (entry == null) continue;
+                    var entry = PriceEntries.FirstOrDefault(o => o.AlgoName == algo);
+                    if (entry == null) continue;
 
-                        entry.Price = item["estimate_current"].ExtractDecimal() * 1000;
-                        entry.FeePercent = item["fees"].ExtractDecimal();
-                    }
-
-                    MiningEngine.PricesUpdated = true;
-                    MiningEngine.HasPrices = true;
-
-                    LastUpdated = DateTime.Now;
+                    entry.Price = item["estimate_current"].ExtractDecimal() * 1000;
+                    entry.FeePercent = item["fees"].ExtractDecimal();
                 }
-            }
-            catch (Exception ex)
-            {
-                ErrorLogger.Log(ex);
+
+                MiningEngine.PricesUpdated = true;
+                MiningEngine.HasPrices = true;
+
+                LastUpdated = DateTime.Now;
             }
         }
 
-        private void DownloadStringCompletedBalance(object sender, DownloadStringCompletedEventArgs e)
+        private void ProcessBalances(object jsonData)
         {
-            try
-            {
-                var pageString = e.Result;
-                if (pageString == null) return;
-                var serializer = new JavaScriptSerializer();
-                var data = serializer.DeserializeObject(pageString) as Dictionary<string, object>;
+            var data = jsonData as Dictionary<string, object>;
 
-                lock (MiningEngine)
+            lock (MiningEngine)
+            {
+                Balance = data["unpaid"].ExtractDecimal();
+
+                MiningEngine.BalancesUpdated = true;
+
+                foreach (var entry in PriceEntries)
+                    entry.AcceptSpeed = 0;
+
+                if (!data.ContainsKey("miners")) return;
+                var miners = data["miners"] as Dictionary<string, object>;
+                foreach (var key in miners.Keys)
                 {
-                    Balance = data["unpaid"].ExtractDecimal();
-
-                    MiningEngine.BalancesUpdated = true;
-
-                    foreach (var entry in PriceEntries)
-                        entry.AcceptSpeed = 0;
-
-                    if (!data.ContainsKey("miners")) return;
-                    var miners = data["miners"] as Dictionary<string, object>;
-                    foreach (var key in miners.Keys)
-                    {
-                        var entry = PriceEntries.Where(o => o.AlgoName == key).FirstOrDefault();
-                        if (entry == null) continue;
-                        var item = miners[key] as Dictionary<string, object>;
-                        entry.AcceptSpeed = item["hashrate"].ExtractDecimal() / 1000000;
-                    }
-
-                    MiningEngine.PricesUpdated = true;
+                    var entry = PriceEntries.Where(o => o.AlgoName == key).FirstOrDefault();
+                    if (entry == null) continue;
+                    var item = miners[key] as Dictionary<string, object>;
+                    entry.AcceptSpeed = item["hashrate"].ExtractDecimal() / 1000000;
                 }
-            }
-            catch (Exception ex)
-            {
-                ErrorLogger.Log(ex);
+
+                MiningEngine.PricesUpdated = true;
             }
         }
     }

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Web.Script.Serialization;
 using MinerControl.PriceEntries;
+using MinerControl.Utility;
 
 namespace MinerControl.Services
 {
@@ -36,97 +34,77 @@ namespace MinerControl.Services
 
         public override void CheckPrices()
         {
-            LaunchChecker(CurrentFormat, DownloadStringCompletedCurrent);
-            LaunchChecker(string.Format(BalanceFormat, _account), DownloadStringCompletedBalance);
+            WebUtil.DownloadJson(CurrentFormat, ProcessPrices);
+            WebUtil.DownloadJson(string.Format(BalanceFormat, _account), ProcessBalances);
         }
 
-        private void DownloadStringCompletedBalance(object sender, DownloadStringCompletedEventArgs e)
+        private void ProcessPrices(object jsonData)
         {
-            try
+            var data = jsonData as Dictionary<string, object>;
+            var result = data["result"] as Dictionary<string, object>;
+            var stats = result["stats"] as object[];
+
+            lock (MiningEngine)
             {
-                var totalBalance = 0m;
-                var pageString = e.Result;
-                if (pageString == null) return;
-                var serializer = new JavaScriptSerializer();
-                var data = serializer.DeserializeObject(pageString) as Dictionary<string, object>;
-                var result = data["result"] as Dictionary<string, object>;
-                var stats = result["stats"] as object[];
                 foreach (var stat in stats)
                 {
                     var item = stat as Dictionary<string, object>;
-                    totalBalance += item["balance"].ExtractDecimal();
-                    var algo = int.Parse(item["algo"].ToString());
+                    var algo = item["algo"] as int?;
                     var entry = PriceEntries.FirstOrDefault(o => o.AlgorithmId == algo);
                     if (entry == null) continue;
 
-                    entry.Balance = item["balance"].ExtractDecimal();
+                    entry.Price = item["price"].ExtractDecimal();
                     switch (entry.AlgoName)
                     {
-                        //case "sha256":
-                        //    entry.AcceptSpeed = item["accepted_speed"].ExtractDecimal();
-                        //    entry.RejectSpeed = item["rejected_speed"].ExtractDecimal();
-                        //    break;
+                        case "sha256":
+                            entry.Price = item["price"].ExtractDecimal() / 1000; // SHA256 listed in TH/s
+                            break;
                         default:
-                            entry.AcceptSpeed = item["accepted_speed"].ExtractDecimal() * 1000;
-                            entry.RejectSpeed = item["rejected_speed"].ExtractDecimal() * 1000;
+                            entry.Price = item["price"].ExtractDecimal(); // All others in GH/s
                             break;
                     }
                 }
 
-                lock (MiningEngine)
-                {
-                    Balance = totalBalance;
+                MiningEngine.PricesUpdated = true;
+                MiningEngine.HasPrices = true;
 
-                    MiningEngine.BalancesUpdated = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorLogger.Log(ex);
+                LastUpdated = DateTime.Now;
             }
         }
 
-        private void DownloadStringCompletedCurrent(object sender, DownloadStringCompletedEventArgs e)
+        private void ProcessBalances(object jsonData)
         {
-            try
+            var totalBalance = 0m;
+            var data = jsonData as Dictionary<string, object>;
+            var result = data["result"] as Dictionary<string, object>;
+            var stats = result["stats"] as object[];
+            foreach (var stat in stats)
             {
-                var pageString = e.Result;
-                if (pageString == null) return;
-                var serializer = new JavaScriptSerializer();
-                var data = serializer.DeserializeObject(pageString) as Dictionary<string, object>;
-                var result = data["result"] as Dictionary<string, object>;
-                var stats = result["stats"] as object[];
+                var item = stat as Dictionary<string, object>;
+                totalBalance += item["balance"].ExtractDecimal();
+                var algo = int.Parse(item["algo"].ToString());
+                var entry = PriceEntries.FirstOrDefault(o => o.AlgorithmId == algo);
+                if (entry == null) continue;
 
-                lock (MiningEngine)
+                entry.Balance = item["balance"].ExtractDecimal();
+                switch (entry.AlgoName)
                 {
-                    foreach (var stat in stats)
-                    {
-                        var item = stat as Dictionary<string, object>;
-                        var algo = item["algo"] as int?;
-                        var entry = PriceEntries.FirstOrDefault(o => o.AlgorithmId == algo);
-                        if (entry == null) continue;
-
-                        entry.Price = item["price"].ExtractDecimal();
-                        switch (entry.AlgoName)
-                        {
-                            case "sha256":
-                                entry.Price = item["price"].ExtractDecimal() / 1000; // SHA256 listed in TH/s
-                                break;
-                            default:
-                                entry.Price = item["price"].ExtractDecimal(); // All others in GH/s
-                                break;
-                        }
-                    }
-
-                    MiningEngine.PricesUpdated = true;
-                    MiningEngine.HasPrices = true;
-
-                    LastUpdated = DateTime.Now;
+                    //case "sha256":
+                    //    entry.AcceptSpeed = item["accepted_speed"].ExtractDecimal();
+                    //    entry.RejectSpeed = item["rejected_speed"].ExtractDecimal();
+                    //    break;
+                    default:
+                        entry.AcceptSpeed = item["accepted_speed"].ExtractDecimal() * 1000;
+                        entry.RejectSpeed = item["rejected_speed"].ExtractDecimal() * 1000;
+                        break;
                 }
             }
-            catch (Exception ex)
+
+            lock (MiningEngine)
             {
-                ErrorLogger.Log(ex);
+                Balance = totalBalance;
+
+                MiningEngine.BalancesUpdated = true;
             }
         }
 
