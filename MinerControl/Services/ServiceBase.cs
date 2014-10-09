@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Net;
-using System.Text;
 using MinerControl.PriceEntries;
 using MinerControl.Utility;
 
@@ -126,23 +123,6 @@ namespace MinerControl.Services
         protected void Add(TEntry entry)
         {
             MiningEngine.PriceEntries.Add(entry);
-        }
-
-        protected static void LaunchChecker(string url, DownloadStringCompletedEventHandler complete)
-        {
-            try
-            {
-                using (var client = new WebClient())
-                {
-                    var uri = new Uri(url);
-                    client.DownloadStringCompleted += complete;
-                    client.DownloadStringAsync(uri);
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorLogger.Log(ex);
-            }
         }
 
         protected string GetAlgoName(string name)

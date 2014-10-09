@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Web.Script.Serialization;
 using MinerControl.PriceEntries;
+using MinerControl.Utility;
 
 namespace MinerControl.Services
 {
@@ -47,62 +44,42 @@ namespace MinerControl.Services
 
         public override void CheckPrices()
         {
-            LaunchChecker(string.Format("https://pool.trademybit.com/api/bestalgo?key={0}", _apikey), DownloadStringAlgoCompleted);
-            LaunchChecker(string.Format("https://pool.trademybit.com/api/balance?key={0}", _apikey), DownloadStringBalanceCompleted);
+            WebUtil.DownloadJson(string.Format("https://pool.trademybit.com/api/bestalgo?key={0}", _apikey), ProcessPrices);
+            WebUtil.DownloadJson(string.Format("https://pool.trademybit.com/api/balance?key={0}", _apikey), ProcessBalances);
         }
 
-        private void DownloadStringAlgoCompleted(object sender, DownloadStringCompletedEventArgs e)
+        private void ProcessPrices(object jsonData)
         {
-            try
+            var data = jsonData as object[];
+            lock (MiningEngine)
             {
-                var pageString = e.Result;
-                if (pageString == null) return;
-                var serializer = new JavaScriptSerializer();
-                var data = serializer.DeserializeObject(pageString) as object[];
-                lock (MiningEngine)
+                foreach (var rawitem in data)
                 {
-                    foreach (var rawitem in data)
-                    {
-                        var item = rawitem as Dictionary<string, object>;
-                        var algo = item.GetString("algo");
-                        var entry = PriceEntries.FirstOrDefault(o => o.AlgoName == GetAlgoName(algo));
-                        if (entry == null) continue;
+                    var item = rawitem as Dictionary<string, object>;
+                    var algo = item.GetString("algo");
+                    var entry = PriceEntries.FirstOrDefault(o => o.AlgoName == GetAlgoName(algo));
+                    if (entry == null) continue;
 
-                        entry.Price = item["actual"].ExtractDecimal() * 1000;
-                    }
-
-                    MiningEngine.PricesUpdated = true;
-                    MiningEngine.HasPrices = true;
-
-                    LastUpdated = DateTime.Now;
+                    entry.Price = item["actual"].ExtractDecimal() * 1000;
                 }
-            }
-            catch (Exception ex)
-            {
-                ErrorLogger.Log(ex);
+
+                MiningEngine.PricesUpdated = true;
+                MiningEngine.HasPrices = true;
+
+                LastUpdated = DateTime.Now;
             }
         }
 
-        private void DownloadStringBalanceCompleted(object sender, DownloadStringCompletedEventArgs e)
+        private void ProcessBalances(object jsonData)
         {
-            try
-            {
-                var pageString = e.Result;
-                if (pageString == null) return;
-                var serializer = new JavaScriptSerializer();
-                var data = serializer.DeserializeObject(pageString) as Dictionary<string, object>;
-                var balances = data["autoexchange"] as Dictionary<string, object>;
+            var data = jsonData as Dictionary<string, object>;
+            var balances = data["autoexchange"] as Dictionary<string, object>;
 
-                lock (MiningEngine)
-                {
-                    Balance = balances["est_total"].ExtractDecimal();
-
-                    MiningEngine.BalancesUpdated = true;
-                }
-            }
-            catch (Exception ex)
+            lock (MiningEngine)
             {
-                ErrorLogger.Log(ex);
+                Balance = balances["est_total"].ExtractDecimal();
+
+                MiningEngine.BalancesUpdated = true;
             }
         }
     }
