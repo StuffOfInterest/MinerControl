@@ -51,10 +51,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlgorithmEntry.cs" />
-    <Compile Include="ErrorLogger.cs" />
+    <Compile Include="Utility\ErrorLogger.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Hardware\PInvokeDelegateFactory.cs" />
-    <Compile Include="IService.cs" />
+    <Compile Include="Services\IService.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>

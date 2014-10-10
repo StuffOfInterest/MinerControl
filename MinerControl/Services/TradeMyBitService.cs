@@ -78,8 +78,6 @@ namespace MinerControl.Services
             lock (MiningEngine)
             {
                 Balance = balances["est_total"].ExtractDecimal();
-
-                MiningEngine.BalancesUpdated = true;
             }
         }
     }

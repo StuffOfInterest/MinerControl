@@ -120,7 +120,7 @@ namespace MinerControl.Services
                     if (entry == null) continue;
 
                     entry.AcceptSpeed = item["hashrate"].ExtractDecimal() / 1000000;
-                    entry.RejectSpeed = item["stalerate"].ExtractDecimal() / 100000;
+                    entry.RejectSpeed = item["stalerate"].ExtractDecimal() / 1000000;
 
                     var balances = item["balances"] as Dictionary<string, object>;
                     entry.Balance = balances["confirmed"].ExtractDecimal() + balances["unconverted"].ExtractDecimal();
@@ -129,7 +129,6 @@ namespace MinerControl.Services
                 Balance = PriceEntries.Select(o => o.Balance).Sum();
 
                 MiningEngine.PricesUpdated = true;
-                MiningEngine.BalancesUpdated = true;
             }
         }
     }

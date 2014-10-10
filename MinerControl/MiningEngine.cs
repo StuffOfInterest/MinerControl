@@ -95,7 +95,6 @@ namespace MinerControl
             }
         }
 
-        public bool BalancesUpdated { get; set; }
         public bool PricesUpdated { get; set; }
         public bool HasPrices { get; set; }
 

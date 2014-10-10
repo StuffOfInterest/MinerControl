@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Windows.Forms;
 using System.Reflection;
+using System.Windows.Forms;
 using MinerControl.PriceEntries;
-using System.Threading;
-using System.ComponentModel;
+using MinerControl.Services;
 using MinerControl.Utility;
 
 namespace MinerControl
@@ -191,12 +191,6 @@ namespace MinerControl
         private void tmrTimeUpdate_Tick(object sender, EventArgs e)
         {
             UpdateTimes();
-
-            if (_engine.PricesUpdated)
-            {
-                //UpdateServicesGrid();
-                _engine.BalancesUpdated = false;
-            }
 
             if (_engine.PricesUpdated)
             {

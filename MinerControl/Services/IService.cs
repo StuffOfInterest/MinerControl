@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using MinerControl.PriceEntries;
 
-namespace MinerControl
+namespace MinerControl.Services
 {
     public interface IService : INotifyPropertyChanged
     {

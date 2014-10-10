@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MinerControl.Services;
 using MinerControl.Utility;
 
 namespace MinerControl.PriceEntries
@@ -43,7 +41,7 @@ namespace MinerControl.PriceEntries
         public decimal Earn { get { return Price / 1000 * Hashrate / 1000; } }
         public decimal PowerCost { get { return Power / 1000 * 24 * MiningEngine.PowerCost / MiningEngine.Exchange; } }
         public virtual decimal Fees { get { return _fees; } set { SetField(ref _fees, value, () => Fees, () => NetEarn); } }
-        public virtual decimal Weight { get { return _weight; } set { SetField(ref _weight, value, () => Weight, () => NetEarn); } }
+        public decimal Weight { get { return _weight; } set { SetField(ref _weight, value, () => Weight, () => NetEarn); } }
         public decimal NetEarn { get { return ((Earn - Fees) * Weight) - PowerCost; } }
 
         public decimal Balance { get { return _balance; } set { SetField(ref _balance, value, () => Balance, () => BalancePrint); } }
@@ -64,15 +62,11 @@ namespace MinerControl.PriceEntries
             }
         }
 
-        public virtual string ServicePrint { get { return ServiceEntry.ServiceEnum.ToString(); } }
-
-        public string TimeMiningPrint
-        {
-            get
-            {
-                return TimeMiningWithCurrent.FormatTime(true);
-            }
-        }
+        public string ServicePrint { get { return ServiceEntry.ServiceEnum.ToString(); } }
+        public string BalancePrint { get { return Balance == 0.0m ? string.Empty : Balance.ToString("N8"); } }
+        public string AcceptSpeedPrint { get { return AcceptSpeed == 0.0m ? string.Empty : AcceptSpeed.ToString("N2"); } }
+        public string RejectSpeedPrint { get { return RejectSpeed == 0.0m ? string.Empty : RejectSpeed.ToString("N2"); } }
+        public string TimeMiningPrint { get { return TimeMiningWithCurrent.FormatTime(true); } }
 
         public string StatusPrint
         {
@@ -87,10 +81,6 @@ namespace MinerControl.PriceEntries
                 return string.Empty;
             }
         }
-
-        public string BalancePrint { get { return Balance == 0.0m ? string.Empty : Balance.ToString("N8"); } }
-        public string AcceptSpeedPrint { get { return AcceptSpeed == 0.0m ? string.Empty : AcceptSpeed.ToString("N2"); } }
-        public string RejectSpeedPrint { get { return RejectSpeed == 0.0m ? string.Empty : RejectSpeed.ToString("N2"); } }
 
         public void UpdateStatus()
         {

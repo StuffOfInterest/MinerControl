@@ -68,8 +68,6 @@ namespace MinerControl.Services
             {
                 Balance = data["unpaid"].ExtractDecimal();
 
-                MiningEngine.BalancesUpdated = true;
-
                 foreach (var entry in PriceEntries)
                     entry.AcceptSpeed = 0;
 

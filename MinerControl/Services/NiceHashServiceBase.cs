@@ -89,10 +89,10 @@ namespace MinerControl.Services
                 entry.Balance = item["balance"].ExtractDecimal();
                 switch (entry.AlgoName)
                 {
-                    //case "sha256":
-                    //    entry.AcceptSpeed = item["accepted_speed"].ExtractDecimal();
-                    //    entry.RejectSpeed = item["rejected_speed"].ExtractDecimal();
-                    //    break;
+                    case "sha256":
+                        entry.AcceptSpeed = item["accepted_speed"].ExtractDecimal();
+                        entry.RejectSpeed = item["rejected_speed"].ExtractDecimal();
+                        break;
                     default:
                         entry.AcceptSpeed = item["accepted_speed"].ExtractDecimal() * 1000;
                         entry.RejectSpeed = item["rejected_speed"].ExtractDecimal() * 1000;
@@ -103,8 +103,6 @@ namespace MinerControl.Services
             lock (MiningEngine)
             {
                 Balance = totalBalance;
-
-                MiningEngine.BalancesUpdated = true;
             }
         }
 
