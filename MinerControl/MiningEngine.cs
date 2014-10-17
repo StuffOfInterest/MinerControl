@@ -19,8 +19,9 @@ namespace MinerControl
         private IList<IService> _services = new List<IService>();
         private decimal _powerCost;
         private decimal _exchange;
-        public string _currencyCode;
-        public string _currencySymbol;
+        private string _currencyCode;
+        private string _currencySymbol;
+        private bool _logactivity;
         private PriceEntryBase _currentRunning;
         private DateTime? _startMining;
         private TimeSpan _minTime;
@@ -205,6 +206,8 @@ namespace MinerControl
 
             if (data.ContainsKey("logerrors"))
                 ErrorLogger.LogExceptions = bool.Parse(data["logerrors"].ToString());
+            if (data.ContainsKey("logactivity"))
+                _logactivity = bool.Parse(data["logactivity"].ToString());
             if (data.ContainsKey("minerkillmode"))
                 MinerKillMode = int.Parse(data["minerkillmode"].ToString());
             if (data.ContainsKey("gridsortmode"))
@@ -239,6 +242,7 @@ namespace MinerControl
         {
             if (_process == null || _process.HasExited) return;
 
+            LogActivity(_donationMiningMode == MiningModeEnum.Donation ? "DonationStop" : "Stop");
             RecordMiningTime();
             if (MinerKillMode == 0)
                 ProcessUtil.KillProcess(_process);
@@ -309,6 +313,8 @@ namespace MinerControl
                 HideMinerWindow();
 
             entry.UpdateStatus();
+
+            LogActivity(_donationMiningMode == MiningModeEnum.Donation ? "DonationStart" : "Start");
         }
 
         private void ClearDeadTimes()
@@ -348,6 +354,7 @@ namespace MinerControl
                     lock (this)
                     {
                         _currentRunning.DeadTime = DateTime.Now;
+                        LogActivity(_donationMiningMode == MiningModeEnum.Donation ? "DonationDead" : "Dead");
                         RecordMiningTime();
                     }
                 }
@@ -478,6 +485,38 @@ namespace MinerControl
                 }
 
                 if (!string.IsNullOrWhiteSpace(symbol)) _currencySymbol = symbol;
+            }
+        }
+
+        private void LogActivity(string action)
+        {
+            if (!_logactivity) return;
+
+            var items = new[]
+            {
+                DateTime.Now.ToString("s"),
+                action,
+                MiningMode.ToString(),
+                _currentRunning != null ? _currentRunning.ServicePrint : string.Empty,
+                _currentRunning != null ? _currentRunning.AlgoName : string.Empty,
+                _currentRunning != null ? _currentRunning.Price.ToString("F6") : string.Empty,
+                _currentRunning != null ? _currentRunning.Earn.ToString("F6") : string.Empty,
+                _currentRunning != null ? _currentRunning.Fees.ToString("F6") : string.Empty,
+                _currentRunning != null ? _currentRunning.Power.ToString("F6") : string.Empty,
+                _currentRunning != null ? _currentRunning.NetEarn.ToString("F6") : string.Empty,
+                _exchange.ToString("F2"),
+                _currentRunning != null ? _currentRunning.ServiceEntry.Balance.ToString("F8") : string.Empty
+            };
+
+            var line = string.Join(",", items);
+            const string logfile = "activity.log";
+
+            var exists = File.Exists(logfile);
+            using (var w = exists ? File.AppendText(logfile) : File.CreateText(logfile))
+            {
+                if (!exists)
+                    w.WriteLine("time,action,mode,service,algo,price,earn,fees,power,netearn,exchange,servicebalance");
+                w.WriteLine(line);
             }
         }
     }
