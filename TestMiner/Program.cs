@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace TestMiner
 {
@@ -13,6 +9,11 @@ namespace TestMiner
         {
             var x = 1;
             Console.WriteLine("I'm pretending to mine.");
+            if (args.Length > 0)
+            {
+                Console.WriteLine(string.Format("Arguments: {0}", string.Join(" ", args)));
+            }
+
             while (!Console.KeyAvailable)
             {
                 Thread.Sleep(1000);
