@@ -566,7 +566,7 @@ namespace MinerControl
             if (WriteConsoleAction == null) return;
 
             if (prefixTime)
-                text = string.Format("[{0:hh:mm:ss}] {1}", DateTime.Now, text);
+                text = string.Format("[{0:HH:mm:ss}] {1}", DateTime.Now, text);
 
             WriteConsoleAction(text);
         }
