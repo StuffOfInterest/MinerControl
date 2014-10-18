@@ -18,6 +18,7 @@ namespace MinerControl.PriceEntries
         public IService ServiceEntry { get; set; }
         public string AlgoName { get; set; }
         public string Name { get { return GetAlgoDisplayName(AlgoName); } }
+        public bool UseWindow { get; set; }
 
         public decimal Hashrate { get; set; }
         public decimal Power { get; set; }

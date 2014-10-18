@@ -34,6 +34,7 @@ namespace MinerControl.Services
 
         public override void CheckPrices()
         {
+            ClearStalePrices();
             WebUtil.DownloadJson(CurrentFormat, ProcessPrices);
             WebUtil.DownloadJson(string.Format(BalanceFormat, _account), ProcessBalances);
         }

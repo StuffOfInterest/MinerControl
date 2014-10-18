@@ -110,6 +110,8 @@ namespace MinerControl.Services
             entry.Folder = ProcessedSubstitutions(item.GetString("folder")) ?? string.Empty;
             entry.Command = ProcessedSubstitutions(item.GetString("command"));
             entry.Arguments = ProcessedSubstitutions(item.GetString("arguments")) ?? string.Empty;
+            if(item.ContainsKey("usewindow"))
+                entry.UseWindow = bool.Parse(item["usewindow"].ToString());
             if (!string.IsNullOrWhiteSpace(DonationAccount))
             {
                 entry.DonationFolder = ProcessedDonationSubstitutions(item.GetString("folder")) ?? string.Empty;
@@ -129,6 +131,14 @@ namespace MinerControl.Services
         {
             if (AlgoTranslations == null || !AlgoTranslations.ContainsKey(name)) return name;
             return AlgoTranslations[name];
+        }
+
+        protected void ClearStalePrices()
+        {
+            if (!LastUpdated.HasValue || LastUpdated.Value.AddMinutes(30) > DateTime.Now) return;
+
+            foreach (var entry in PriceEntries)
+               entry.Price = 0;
         }
     }
 }

@@ -23,6 +23,7 @@ namespace MinerControl
 
         public MainWindow()
         {
+            _engine.WriteConsoleAction = WriteConsole;
             _engine.LoadConfig();
             if (!string.IsNullOrWhiteSpace(_engine.CurrencyCode))
                 _engine.LoadExchangeRates();
@@ -64,6 +65,7 @@ namespace MinerControl
             UpdateButtons();
             RunCycle();
             UpdateGrid(true);
+
             tmrPriceCheck.Enabled = true;
             if (!string.IsNullOrWhiteSpace(_engine.CurrencyCode))
                 tmrExchangeUpdate.Enabled = true;
@@ -227,6 +229,28 @@ namespace MinerControl
             if (_engine.CurrentRunning == priceEntry.Id && _engine.StartMining.HasValue)
                 time += (DateTime.Now - _engine.StartMining.Value);
             return time.FormatTime();
+        }
+
+        private void WriteConsole(string text)
+        {
+            Invoke(new MethodInvoker(
+                    delegate
+                    {
+                        textConsole.AppendText(text + Environment.NewLine);
+                        int numOfLines = textConsole.Lines.Length - 200;
+                        if (numOfLines <= 0) return;
+
+                        var lines = textConsole.Lines;
+                        var newLines = lines.Skip(numOfLines);
+
+                        textConsole.Lines = newLines.ToArray();
+                        textConsole.Focus();
+                        textConsole.SelectionStart = textConsole.Text.Length;
+                        textConsole.SelectionLength = 0;
+                        textConsole.ScrollToCaret();
+                        textConsole.Refresh();
+                    }
+                ));
         }
     }
 }

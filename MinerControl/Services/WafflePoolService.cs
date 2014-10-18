@@ -66,6 +66,7 @@ namespace MinerControl.Services
 
         public override void CheckPrices()
         {
+            ClearStalePrices();
             WebUtil.DownloadJson("http://wafflepool.com/api/stats", ProcessPrices);
             WebUtil.DownloadJson(string.Format("http://wafflepool.com/api/miner?address={0}", _account), ProcessBalances);
         }

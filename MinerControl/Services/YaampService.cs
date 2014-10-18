@@ -30,6 +30,7 @@ namespace MinerControl.Services
 
         public override void CheckPrices()
         {
+            ClearStalePrices();
             WebUtil.DownloadJson("http://yaamp.com/api/status", ProcessPrices);
             WebUtil.DownloadJson(string.Format("http://yaamp.com/api/wallet?address={0}", _account), ProcessBalances);
         }

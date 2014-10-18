@@ -160,6 +160,11 @@ namespace MinerControl
         }
 
         public void Cleanup(){
+            WriteConsoleAction = null;
+
+            if (_currentRunning != null && _currentRunning.UseWindow == false)
+                StopMiner();
+
             if (_process != null)
                 _process.Dispose();
         }
@@ -243,6 +248,7 @@ namespace MinerControl
             if (_process == null || _process.HasExited) return;
 
             LogActivity(_donationMiningMode == MiningModeEnum.Donation ? "DonationStop" : "Stop");
+            WriteConsole(string.Format("Stopping {0} {1}", _currentRunning.ServicePrint, _currentRunning.AlgoName), true);
             RecordMiningTime();
             if (MinerKillMode == 0)
                 ProcessUtil.KillProcess(_process);
@@ -295,22 +301,48 @@ namespace MinerControl
                 _process.StartInfo.FileName = entry.Command;
                 _process.StartInfo.Arguments = entry.Arguments;
             }
-            _process.StartInfo.WindowStyle = (isMinimizedToTray && TrayMode == 2) ? ProcessWindowStyle.Hidden : ProcessWindowStyle.Minimized;
-            _process.Start();
-            _startMining = DateTime.Now;
-            _donationMiningMode = MiningMode;
-            Thread.Sleep(100);
-            try
+
+            WriteConsole(string.Format("Starting {0} {1}", _currentRunning.ServicePrint, _currentRunning.AlgoName), true);
+            if (entry.UseWindow)
             {
-                ProcessUtil.SetWindowTitle(_process, string.Format("{0} {1} Miner", entry.ServicePrint, entry.Name));
+                _process.StartInfo.WindowStyle = (isMinimizedToTray && TrayMode == 2) ? ProcessWindowStyle.Hidden : ProcessWindowStyle.Minimized;
+                _process.Start();
             }
-            catch (Exception ex)
+            else
             {
-                ErrorLogger.Log(ex);
+                _process.StartInfo.RedirectStandardOutput = true;
+                _process.StartInfo.RedirectStandardError = true;
+                _process.EnableRaisingEvents = true;
+                _process.StartInfo.CreateNoWindow = true;
+                _process.StartInfo.UseShellExecute = false;
+
+                _process.ErrorDataReceived += ProcessConsoleOutput;
+                _process.OutputDataReceived += ProcessConsoleOutput;
+                
+                _process.Start();
+
+                _process.BeginOutputReadLine();
+                _process.BeginErrorReadLine();
             }
 
-            if (isMinimizedToTray && TrayMode == 1)
-                HideMinerWindow();
+            _startMining = DateTime.Now;
+            _donationMiningMode = MiningMode;
+
+            if (!entry.UseWindow)
+            {
+                Thread.Sleep(100);
+                try
+                {
+                    ProcessUtil.SetWindowTitle(_process, string.Format("{0} {1} Miner", entry.ServicePrint, entry.Name));
+                }
+                catch (Exception ex)
+                {
+                    ErrorLogger.Log(ex);
+                }
+
+                if (isMinimizedToTray && TrayMode == 1)
+                    HideMinerWindow();
+            }
 
             entry.UpdateStatus();
 
@@ -355,6 +387,7 @@ namespace MinerControl
                     {
                         _currentRunning.DeadTime = DateTime.Now;
                         LogActivity(_donationMiningMode == MiningModeEnum.Donation ? "DonationDead" : "Dead");
+                        WriteConsole(string.Format("Dead {0} {1}", _currentRunning.ServicePrint, _currentRunning.AlgoName), true);
                         RecordMiningTime();
                     }
                 }
@@ -451,11 +484,15 @@ namespace MinerControl
 
         public void HideMinerWindow()
         {
+            if (_currentRunning == null || !_currentRunning.UseWindow) return;
+
             ProcessUtil.HideWindow(_process);
         }
 
         public void MinimizeMinerWindow()
         {
+            if (_currentRunning == null || !_currentRunning.UseWindow) return;
+
             ProcessUtil.MinimizeWindow(_process);
         }
 
@@ -519,5 +556,27 @@ namespace MinerControl
                 w.WriteLine(line);
             }
         }
+
+        #region Console interaction
+
+        public Action<string> WriteConsoleAction { get; set; }
+
+        private void WriteConsole(string text, bool prefixTime = false)
+        {
+            if (WriteConsoleAction == null) return;
+
+            if (prefixTime)
+                text = string.Format("[{0:hh:mm:ss}] {1}", DateTime.Now, text);
+
+            WriteConsoleAction(text);
+        }
+
+        private void ProcessConsoleOutput(object sender, DataReceivedEventArgs e)
+        {
+            if (e.Data == null) return;
+            WriteConsole(e.Data);
+        }
+
+        #endregion
     }
 }

@@ -14,13 +14,12 @@ namespace TestMiner
                 Console.WriteLine(string.Format("Arguments: {0}", string.Join(" ", args)));
             }
 
-            while (!Console.KeyAvailable)
+            while(true)
             {
                 Thread.Sleep(1000);
                 Console.WriteLine(string.Format("Found block {0}!", x));
                 x++;
             }
-            Console.ReadKey(true);
         }
     }
 }

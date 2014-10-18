@@ -44,6 +44,7 @@ namespace MinerControl.Services
 
         public override void CheckPrices()
         {
+            ClearStalePrices();
             WebUtil.DownloadJson(string.Format("https://pool.trademybit.com/api/bestalgo?key={0}", _apikey), ProcessPrices);
             WebUtil.DownloadJson(string.Format("https://pool.trademybit.com/api/balance?key={0}", _apikey), ProcessBalances);
         }
