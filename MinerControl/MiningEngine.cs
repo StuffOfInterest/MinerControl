@@ -291,14 +291,18 @@ namespace MinerControl
             {
                 if (!string.IsNullOrWhiteSpace(entry.DonationFolder))
                     _process.StartInfo.WorkingDirectory = entry.DonationFolder;
-                _process.StartInfo.FileName = entry.DonationCommand;
+                _process.StartInfo.FileName = string.IsNullOrWhiteSpace(entry.DonationFolder)
+                    ? entry.DonationCommand
+                    : string.Format(@"{0}\{1}", entry.DonationFolder, entry.DonationCommand);
                 _process.StartInfo.Arguments = entry.DonationArguments;
             }
             else
             {
                 if (!string.IsNullOrWhiteSpace(entry.Folder))
                     _process.StartInfo.WorkingDirectory = entry.Folder;
-                _process.StartInfo.FileName = entry.Command;
+                _process.StartInfo.FileName = string.IsNullOrWhiteSpace(entry.Folder)
+                    ? entry.Command
+                    : string.Format(@"{0}\{1}", entry.Folder, entry.Command);
                 _process.StartInfo.Arguments = entry.Arguments;
             }
 
@@ -307,6 +311,19 @@ namespace MinerControl
             {
                 _process.StartInfo.WindowStyle = (isMinimizedToTray && TrayMode == 2) ? ProcessWindowStyle.Hidden : ProcessWindowStyle.Minimized;
                 _process.Start();
+
+                Thread.Sleep(100);
+                try
+                {
+                    ProcessUtil.SetWindowTitle(_process, string.Format("{0} {1} Miner", entry.ServicePrint, entry.Name));
+                }
+                catch (Exception ex)
+                {
+                    ErrorLogger.Log(ex);
+                }
+
+                if (isMinimizedToTray && TrayMode == 1)
+                    HideMinerWindow();
             }
             else
             {
@@ -327,22 +344,6 @@ namespace MinerControl
 
             _startMining = DateTime.Now;
             _donationMiningMode = MiningMode;
-
-            if (!entry.UseWindow)
-            {
-                Thread.Sleep(100);
-                try
-                {
-                    ProcessUtil.SetWindowTitle(_process, string.Format("{0} {1} Miner", entry.ServicePrint, entry.Name));
-                }
-                catch (Exception ex)
-                {
-                    ErrorLogger.Log(ex);
-                }
-
-                if (isMinimizedToTray && TrayMode == 1)
-                    HideMinerWindow();
-            }
 
             entry.UpdateStatus();
 

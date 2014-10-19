@@ -30,21 +30,21 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle31 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle32 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle33 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle34 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle35 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle36 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle37 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle38 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle39 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle40 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle41 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle42 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle43 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle44 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle45 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnStart = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
             this.tmrPriceCheck = new System.Windows.Forms.Timer(this.components);
@@ -168,7 +168,7 @@
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(102, 13);
             this.label13.TabIndex = 10;
-            this.label13.Text = "Miner Control v1.4.0";
+            this.label13.Text = "Miner Control v1.4.1";
             // 
             // notifyIcon
             // 
@@ -345,8 +345,8 @@
             // Hashrate
             // 
             this.Hashrate.DataPropertyName = "Hashrate";
-            dataGridViewCellStyle31.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.Hashrate.DefaultCellStyle = dataGridViewCellStyle31;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.Hashrate.DefaultCellStyle = dataGridViewCellStyle1;
             this.Hashrate.HeaderText = "Hash";
             this.Hashrate.Name = "Hashrate";
             this.Hashrate.ReadOnly = true;
@@ -357,10 +357,10 @@
             // Price
             // 
             this.Price.DataPropertyName = "Price";
-            dataGridViewCellStyle32.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle32.Format = "N6";
-            dataGridViewCellStyle32.NullValue = null;
-            this.Price.DefaultCellStyle = dataGridViewCellStyle32;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle2.Format = "N6";
+            dataGridViewCellStyle2.NullValue = null;
+            this.Price.DefaultCellStyle = dataGridViewCellStyle2;
             this.Price.HeaderText = "Price";
             this.Price.Name = "Price";
             this.Price.ReadOnly = true;
@@ -371,10 +371,10 @@
             // Earn
             // 
             this.Earn.DataPropertyName = "Earn";
-            dataGridViewCellStyle33.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle33.Format = "N6";
-            dataGridViewCellStyle33.NullValue = null;
-            this.Earn.DefaultCellStyle = dataGridViewCellStyle33;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle3.Format = "N6";
+            dataGridViewCellStyle3.NullValue = null;
+            this.Earn.DefaultCellStyle = dataGridViewCellStyle3;
             this.Earn.HeaderText = "Earn";
             this.Earn.Name = "Earn";
             this.Earn.ReadOnly = true;
@@ -385,9 +385,9 @@
             // Fees
             // 
             this.Fees.DataPropertyName = "Fees";
-            dataGridViewCellStyle34.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle34.Format = "N6";
-            this.Fees.DefaultCellStyle = dataGridViewCellStyle34;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle4.Format = "N6";
+            this.Fees.DefaultCellStyle = dataGridViewCellStyle4;
             this.Fees.HeaderText = "Fees";
             this.Fees.Name = "Fees";
             this.Fees.ReadOnly = true;
@@ -398,10 +398,10 @@
             // PowerCost
             // 
             this.PowerCost.DataPropertyName = "PowerCost";
-            dataGridViewCellStyle35.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle35.Format = "N6";
-            dataGridViewCellStyle35.NullValue = null;
-            this.PowerCost.DefaultCellStyle = dataGridViewCellStyle35;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle5.Format = "N6";
+            dataGridViewCellStyle5.NullValue = null;
+            this.PowerCost.DefaultCellStyle = dataGridViewCellStyle5;
             this.PowerCost.HeaderText = "Power";
             this.PowerCost.Name = "PowerCost";
             this.PowerCost.ReadOnly = true;
@@ -412,10 +412,10 @@
             // NetEarn
             // 
             this.NetEarn.DataPropertyName = "NetEarn";
-            dataGridViewCellStyle36.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle36.Format = "N6";
-            dataGridViewCellStyle36.NullValue = null;
-            this.NetEarn.DefaultCellStyle = dataGridViewCellStyle36;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle6.Format = "N6";
+            dataGridViewCellStyle6.NullValue = null;
+            this.NetEarn.DefaultCellStyle = dataGridViewCellStyle6;
             this.NetEarn.HeaderText = "Net";
             this.NetEarn.Name = "NetEarn";
             this.NetEarn.ReadOnly = true;
@@ -426,9 +426,9 @@
             // Balance
             // 
             this.Balance.DataPropertyName = "BalancePrint";
-            dataGridViewCellStyle37.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle37.NullValue = null;
-            this.Balance.DefaultCellStyle = dataGridViewCellStyle37;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle7.NullValue = null;
+            this.Balance.DefaultCellStyle = dataGridViewCellStyle7;
             this.Balance.HeaderText = "Balance";
             this.Balance.Name = "Balance";
             this.Balance.ReadOnly = true;
@@ -439,9 +439,9 @@
             // AcceptSpeed
             // 
             this.AcceptSpeed.DataPropertyName = "AcceptSpeedPrint";
-            dataGridViewCellStyle38.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle38.NullValue = null;
-            this.AcceptSpeed.DefaultCellStyle = dataGridViewCellStyle38;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle8.NullValue = null;
+            this.AcceptSpeed.DefaultCellStyle = dataGridViewCellStyle8;
             this.AcceptSpeed.HeaderText = "Accept";
             this.AcceptSpeed.Name = "AcceptSpeed";
             this.AcceptSpeed.ReadOnly = true;
@@ -451,9 +451,9 @@
             // RejectSpeed
             // 
             this.RejectSpeed.DataPropertyName = "RejectSpeedPrint";
-            dataGridViewCellStyle39.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle39.NullValue = null;
-            this.RejectSpeed.DefaultCellStyle = dataGridViewCellStyle39;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle9.NullValue = null;
+            this.RejectSpeed.DefaultCellStyle = dataGridViewCellStyle9;
             this.RejectSpeed.HeaderText = "Reject";
             this.RejectSpeed.Name = "RejectSpeed";
             this.RejectSpeed.ReadOnly = true;
@@ -463,8 +463,8 @@
             // TimeMining
             // 
             this.TimeMining.DataPropertyName = "TimeMiningPrint";
-            dataGridViewCellStyle40.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.TimeMining.DefaultCellStyle = dataGridViewCellStyle40;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.TimeMining.DefaultCellStyle = dataGridViewCellStyle10;
             this.TimeMining.HeaderText = "Running";
             this.TimeMining.Name = "TimeMining";
             this.TimeMining.ReadOnly = true;
@@ -518,8 +518,8 @@
             // ServiceName
             // 
             this.ServiceName.DataPropertyName = "ServicePrint";
-            dataGridViewCellStyle41.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.ServiceName.DefaultCellStyle = dataGridViewCellStyle41;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.ServiceName.DefaultCellStyle = dataGridViewCellStyle11;
             this.ServiceName.HeaderText = "Service";
             this.ServiceName.Name = "ServiceName";
             this.ServiceName.ReadOnly = true;
@@ -529,8 +529,8 @@
             // ServiceLastUpdated
             // 
             this.ServiceLastUpdated.DataPropertyName = "LastUpdatedPrint";
-            dataGridViewCellStyle42.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.ServiceLastUpdated.DefaultCellStyle = dataGridViewCellStyle42;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.ServiceLastUpdated.DefaultCellStyle = dataGridViewCellStyle12;
             this.ServiceLastUpdated.HeaderText = "Updated";
             this.ServiceLastUpdated.Name = "ServiceLastUpdated";
             this.ServiceLastUpdated.ReadOnly = true;
@@ -540,8 +540,8 @@
             // ServiceBalance
             // 
             this.ServiceBalance.DataPropertyName = "BalancePrint";
-            dataGridViewCellStyle43.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.ServiceBalance.DefaultCellStyle = dataGridViewCellStyle43;
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.ServiceBalance.DefaultCellStyle = dataGridViewCellStyle13;
             this.ServiceBalance.HeaderText = "Balance";
             this.ServiceBalance.Name = "ServiceBalance";
             this.ServiceBalance.ReadOnly = true;
@@ -551,8 +551,8 @@
             // ServiceCurrency
             // 
             this.ServiceCurrency.DataPropertyName = "CurrencyPrint";
-            dataGridViewCellStyle44.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.ServiceCurrency.DefaultCellStyle = dataGridViewCellStyle44;
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.ServiceCurrency.DefaultCellStyle = dataGridViewCellStyle14;
             this.ServiceCurrency.HeaderText = "Currency";
             this.ServiceCurrency.Name = "ServiceCurrency";
             this.ServiceCurrency.ReadOnly = true;
@@ -562,8 +562,8 @@
             // ServiceRunning
             // 
             this.ServiceRunning.DataPropertyName = "TimeMiningPrint";
-            dataGridViewCellStyle45.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.ServiceRunning.DefaultCellStyle = dataGridViewCellStyle45;
+            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.ServiceRunning.DefaultCellStyle = dataGridViewCellStyle15;
             this.ServiceRunning.HeaderText = "Running";
             this.ServiceRunning.Name = "ServiceRunning";
             this.ServiceRunning.ReadOnly = true;
