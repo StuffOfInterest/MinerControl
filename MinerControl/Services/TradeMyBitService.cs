@@ -14,6 +14,8 @@ namespace MinerControl.Services
         // https://pool.trademybit.com/api/balance?key=[key]
         // {"autoexchange":{"est_total":"0.00130840","unexchanged":"0.00000000","exchanged":"0.00130840","alltime":"0.00000000"}}
 
+        private string _apikey;
+
         public TradeMyBitService()
         {
             ServiceEnum = ServiceEnum.TradeMyBit;
@@ -25,8 +27,6 @@ namespace MinerControl.Services
                     {"nscrypt", "scryptn"}
                 };
         }
-
-        public string _apikey;
 
         public override void Initialize(IDictionary<string, object> data)
         {

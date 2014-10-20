@@ -12,6 +12,7 @@ namespace MinerControl
         TradeMyBit,
         YAAMP,
         WafflePool,
+        LTCRabbit,
         Manual
     }
 }

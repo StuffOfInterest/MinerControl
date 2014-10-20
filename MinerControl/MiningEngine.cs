@@ -183,6 +183,7 @@ namespace MinerControl
             LoadService(new TradeMyBitService(), data, "trademybit");
             LoadService(new YaampService(), data, "yaamp");
             LoadService(new WafflePoolService(), data, "wafflepool");
+            LoadService(new LtcRabbitService(), data, "ltcrabbit");
             LoadService(new ManualService(), data, "manual");
 
             // Set Id for each entry
