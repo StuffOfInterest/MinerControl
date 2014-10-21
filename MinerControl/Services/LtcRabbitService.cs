@@ -27,7 +27,7 @@ namespace MinerControl.Services
         //    "profitability": <same as public api above>,
         //    "ltc_exchange_rates":{"USD":"3.88","EUR":"3.104"},
         //    "btc_exchange_rates":{"USD":"379.736","EUR":"301.00000"},
-        //    "user":{"username":"MinerControl","balance":0,"hashrate_scrypt":0,"hashrate_x11":0,"invalid_shares_scrypt":0,"invalid_shares_x11":0,"sharerate":0,"invalid_share_rate":0,"hashrate":0},
+        //    "user":{"username":"MinerControl","balance":0,"balance_btc":"0.0000033","hashrate_scrypt":0,"hashrate_x11":0,"invalid_shares_scrypt":0,"invalid_shares_x11":0,"sharerate":0,"invalid_share_rate":0,"hashrate":0},
         //    "worker":[],
         //    "earnings":{"basis":[],"alt":[],"24h_total":0,"24h_basis":0,"24h_alt":0,"24h_affiliate":0,"48h_total":0,"48h_basis":0,"48h_alt":0,"48h_affiliate":0}}}
 
@@ -59,7 +59,7 @@ namespace MinerControl.Services
         {
             ClearStalePrices();
             WebUtil.DownloadJson("https://www.ltcrabbit.com/index.php?page=api&action=public", ProcessPrices);
-            WebUtil.DownloadJson(string.Format("https://www.ltcrabbit.com/index.php?page=api&action=getappdata&appname=general&appversion=1&api_key={0}", _apikey), ProcessBalances);
+            WebUtil.DownloadJson(string.Format("https://www.ltcrabbit.com/index.php?page=api&action=getappdata&appname=MinerControl&appversion=1&api_key={0}", _apikey), ProcessBalances);
         }
 
         private void ProcessPrices(object jsonData)
@@ -96,13 +96,7 @@ namespace MinerControl.Services
             var ltc_exchange_rates = getappdata["ltc_exchange_rates"] as Dictionary<string, object>;
             var btc_exchange_rates = getappdata["btc_exchange_rates"] as Dictionary<string, object>;
             var user = getappdata["user"] as Dictionary<string, object>;
-            var ltc_usd = ltc_exchange_rates["USD"].ExtractDecimal();
-            var btc_usd = btc_exchange_rates["USD"].ExtractDecimal();
-            var balance = user["balance"].ExtractDecimal();
-
-            var exchange_rate = ltc_usd / btc_usd;
-
-            Balance = balance * exchange_rate;
+            Balance = user["balance_btc"].ExtractDecimal();
 
             var entry = PriceEntries.FirstOrDefault(o => o.AlgoName == "x11");
             if (entry != null)
