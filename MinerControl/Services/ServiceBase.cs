@@ -69,31 +69,41 @@ namespace MinerControl.Services
             _worker = data.GetString("worker") ?? string.Empty;
             if (data.ContainsKey("weight"))
                 _weight = data["weight"].ExtractDecimal();
-            _param1 = data.GetString("param1") ?? string.Empty;
-            _param2 = data.GetString("param2") ?? string.Empty;
-            _param3 = data.GetString("param3") ?? string.Empty;
+            _param1 = data.GetString("sparam1") ?? data.GetString("param1") ?? string.Empty;
+            _param2 = data.GetString("sparam2") ?? data.GetString("param2") ?? string.Empty;
+            _param3 = data.GetString("sparam3") ?? data.GetString("param3") ?? string.Empty;
         }
 
-        protected string ProcessedSubstitutions(string raw)
+        protected string ProcessedSubstitutions(string raw, AlgorithmEntry algo)
         {
             if (string.IsNullOrWhiteSpace(raw)) return null;
-            return raw
+            raw = raw
                 .Replace("_ACCOUNT_", _account)
-                .Replace("_WORKER_", _worker)
-                .Replace("_PARAM1_", _param1)
-                .Replace("_PARAM2_", _param2)
-                .Replace("_PARAM3_", _param3);
+                .Replace("_WORKER_", _worker);
+            return ProcessCommon(raw, algo);
         }
 
-        protected string ProcessedDonationSubstitutions(string raw)
+        protected string ProcessedDonationSubstitutions(string raw, AlgorithmEntry algo)
         {
             if (string.IsNullOrWhiteSpace(raw)) return null;
-            return raw
+            raw = raw
                 .Replace("_ACCOUNT_", DonationAccount)
-                .Replace("_WORKER_", DonationWorker)
+                .Replace("_WORKER_", DonationWorker);
+            return ProcessCommon(raw, algo);
+        }
+
+        private string ProcessCommon(string raw, AlgorithmEntry algo)
+        {
+            return raw
                 .Replace("_PARAM1_", _param1)
                 .Replace("_PARAM2_", _param2)
-                .Replace("_PARAM3_", _param3);
+                .Replace("_PARAM3_", _param3)
+                .Replace("_SPARAM1_", _param1)
+                .Replace("_SPARAM2_", _param2)
+                .Replace("_SPARAM3_", _param3)
+                .Replace("_APARAM1_", algo.Param1)
+                .Replace("_APARAM2_", algo.Param2)
+                .Replace("_APARAM2_", algo.Param2);
         }
 
         protected TEntry GetEntry(Dictionary<string, object> item)
@@ -107,16 +117,16 @@ namespace MinerControl.Services
             entry.Hashrate = algo.Hashrate;
             entry.Power = algo.Power;
             entry.Weight = _weight;
-            entry.Folder = ProcessedSubstitutions(item.GetString("folder")) ?? string.Empty;
-            entry.Command = ProcessedSubstitutions(item.GetString("command"));
-            entry.Arguments = ProcessedSubstitutions(item.GetString("arguments")) ?? string.Empty;
+            entry.Folder = ProcessedSubstitutions(item.GetString("folder"), algo) ?? string.Empty;
+            entry.Command = ProcessedSubstitutions(item.GetString("command"), algo);
+            entry.Arguments = ProcessedSubstitutions(item.GetString("arguments"), algo) ?? string.Empty;
             if(item.ContainsKey("usewindow"))
                 entry.UseWindow = bool.Parse(item["usewindow"].ToString());
             if (!string.IsNullOrWhiteSpace(DonationAccount))
             {
-                entry.DonationFolder = ProcessedDonationSubstitutions(item.GetString("folder")) ?? string.Empty;
-                entry.DonationCommand = ProcessedDonationSubstitutions(item.GetString("command"));
-                entry.DonationArguments = ProcessedDonationSubstitutions(item.GetString("arguments")) ?? string.Empty;
+                entry.DonationFolder = ProcessedDonationSubstitutions(item.GetString("folder"), algo) ?? string.Empty;
+                entry.DonationCommand = ProcessedDonationSubstitutions(item.GetString("command"), algo);
+                entry.DonationArguments = ProcessedDonationSubstitutions(item.GetString("arguments"), algo) ?? string.Empty;
             }
 
             return entry;

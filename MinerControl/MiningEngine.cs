@@ -237,7 +237,10 @@ namespace MinerControl
                 {
                     Name = item["name"] as string,
                     Hashrate = item["hashrate"].ExtractDecimal(),
-                    Power = item["power"].ExtractDecimal()
+                    Power = item["power"].ExtractDecimal(),
+                    Param1 = item.GetString("aparam1") ?? string.Empty,
+                    Param2 = item.GetString("aparam2") as string ?? string.Empty,
+                    Param3 = item.GetString("aparam3") as string ?? string.Empty
                 };
 
                 _algorithmEntries.Add(entry);

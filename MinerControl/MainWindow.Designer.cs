@@ -168,7 +168,7 @@
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(102, 13);
             this.label13.TabIndex = 10;
-            this.label13.Text = "Miner Control v1.4.2";
+            this.label13.Text = "Miner Control v1.4.3";
             // 
             // notifyIcon
             // 
