@@ -24,22 +24,16 @@ namespace MinerControl
         public MainWindow()
         {
             _engine.WriteConsoleAction = WriteConsole;
-            _engine.LoadConfig();
-            if (!string.IsNullOrWhiteSpace(_engine.CurrencyCode))
-                _engine.LoadExchangeRates();
 
             InitializeComponent();
         }
 
-        private void tmrPriceCheck_Tick(object sender, EventArgs e)
+        private void MainWindow_Load(object sender, EventArgs e)
         {
-            RunCycle();
-            UpdateGrid();
-        }
-        
-        private void tmrExchangeUpdate_Tick(object sender, EventArgs e)
-        {
-            _engine.LoadExchangeRates();
+            if (!_engine.LoadConfig())
+                this.Close();
+            if (!string.IsNullOrWhiteSpace(_engine.CurrencyCode))
+                _engine.LoadExchangeRates();
         }
 
         private void MainWindow_Shown(object sender, EventArgs e)
@@ -81,6 +75,37 @@ namespace MinerControl
         {
             _engine.Cleanup();
         }
+
+        #region Timer events
+
+        private void tmrPriceCheck_Tick(object sender, EventArgs e)
+        {
+            RunCycle();
+            UpdateGrid();
+        }
+        
+        private void tmrExchangeUpdate_Tick(object sender, EventArgs e)
+        {
+            _engine.LoadExchangeRates();
+        }
+
+        private void tmrTimeUpdate_Tick(object sender, EventArgs e)
+        {
+            UpdateTimes();
+
+            if (_engine.PricesUpdated)
+            {
+                UpdateGrid();
+                _engine.PricesUpdated = false;
+            }
+
+            var autoModes = new[] { MiningModeEnum.Automatic, MiningModeEnum.Donation };
+            if (!autoModes.Contains(_engine.MiningMode)) return;
+
+            RunBestAlgo();
+        }
+
+        #endregion
 
         private void RunCycle()
         {
@@ -189,22 +214,6 @@ namespace MinerControl
         }
 
         #endregion
-
-        private void tmrTimeUpdate_Tick(object sender, EventArgs e)
-        {
-            UpdateTimes();
-
-            if (_engine.PricesUpdated)
-            {
-                UpdateGrid();
-                _engine.PricesUpdated = false;
-            }
-
-            var autoModes = new[] { MiningModeEnum.Automatic, MiningModeEnum.Donation };
-            if (!autoModes.Contains(_engine.MiningMode)) return;
-
-            RunBestAlgo();
-        }
 
         private void UpdateTimes()
         {

@@ -757,6 +757,7 @@
             this.Name = "MainWindow";
             this.Text = "Miner Control";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
+            this.Load += new System.EventHandler(this.MainWindow_Load);
             this.Shown += new System.EventHandler(this.MainWindow_Shown);
             this.Resize += new System.EventHandler(this.MainWindow_Resize);
             this.gbActions.ResumeLayout(false);

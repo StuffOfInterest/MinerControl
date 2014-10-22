@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Web.Script.Serialization;
+using System.Windows.Forms;
 using MinerControl.PriceEntries;
 using MinerControl.Services;
 using MinerControl.Utility;
@@ -169,26 +170,61 @@ namespace MinerControl
                 _process.Dispose();
         }
 
-        public void LoadConfig()
+        public bool LoadConfig()
         {
-            var pageString = File.ReadAllText("MinerControl.conf");
-            var serializer = new JavaScriptSerializer();
-            var data = serializer.DeserializeObject(pageString) as Dictionary<string, object>;
+            const string configFile = "MinerControl.conf";
+            if (!File.Exists(configFile))
+            {
+                MessageBox.Show(string.Format("Config file, '{0}', not found.", configFile), "Miner Control: Config file missing", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
 
-            LoadConfigGeneral(data["general"] as Dictionary<string, object>);
-            LoadConfigAlgorithms(data["algorithms"] as object[]);
+            Dictionary<string, object> data;
 
-            LoadService(new NiceHashService(), data, "nicehash");
-            LoadService(new WestHashService(), data, "westhash");
-            LoadService(new TradeMyBitService(), data, "trademybit");
-            LoadService(new YaampService(), data, "yaamp");
-            LoadService(new WafflePoolService(), data, "wafflepool");
-            LoadService(new LtcRabbitService(), data, "ltcrabbit");
-            LoadService(new ManualService(), data, "manual");
+            try
+            {
+                var pageString = File.ReadAllText(configFile);
+                var serializer = new JavaScriptSerializer();
+                data = serializer.DeserializeObject(pageString) as Dictionary<string, object>;
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show(string.Format("Error loading config file: '{0}'.", ex.Message), "Miner Control: Config file error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
 
-            // Set Id for each entry
-            for (var x = 0; x < _priceEntries.Count; x++)
-                _priceEntries[x].Id = x + 1;
+            try
+            {
+                LoadConfigGeneral(data["general"] as Dictionary<string, object>);
+                LoadConfigAlgorithms(data["algorithms"] as object[]);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("Error processing general configuration: '{0}'.", ex.Message), "Miner Control: Config file error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            try
+            {
+                LoadService(new NiceHashService(), data, "nicehash");
+                LoadService(new WestHashService(), data, "westhash");
+                LoadService(new TradeMyBitService(), data, "trademybit");
+                LoadService(new YaampService(), data, "yaamp");
+                LoadService(new WafflePoolService(), data, "wafflepool");
+                LoadService(new LtcRabbitService(), data, "ltcrabbit");
+                LoadService(new ManualService(), data, "manual");
+
+                // Set Id for each entry
+                for (var x = 0; x < _priceEntries.Count; x++)
+                    _priceEntries[x].Id = x + 1;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("Error processing service configuration: '{0}'.", ex.Message), "Miner Control: Config file error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            return true;
         }
 
         private void LoadService(IService service, IDictionary<string, object> data, string name) 
