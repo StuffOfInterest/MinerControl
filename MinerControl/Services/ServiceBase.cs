@@ -103,7 +103,7 @@ namespace MinerControl.Services
                 .Replace("_SPARAM3_", _param3)
                 .Replace("_APARAM1_", algo.Param1)
                 .Replace("_APARAM2_", algo.Param2)
-                .Replace("_APARAM2_", algo.Param2);
+                .Replace("_APARAM3_", algo.Param3);
         }
 
         protected TEntry GetEntry(Dictionary<string, object> item)

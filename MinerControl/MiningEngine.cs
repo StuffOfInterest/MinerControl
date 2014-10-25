@@ -31,6 +31,8 @@ namespace MinerControl
         private TimeSpan _deadtime;
         private int? _nextRun;                    // Next algo to run
         private DateTime? _nextRunFromTime;       // When the next run algo became best
+        private bool _remoteSend;
+        private bool _remoteReceive;
 
         public MiningModeEnum MiningMode { get; set; }
 
@@ -97,8 +99,11 @@ namespace MinerControl
             }
         }
 
-        public bool PricesUpdated { get; set; }
-        public bool HasPrices { get; set; }
+        // Signals for UI updates
+        private volatile bool _pricesUpdated;
+        private volatile bool _hasPrices;
+        public bool PricesUpdated { get { return _pricesUpdated; } set { _pricesUpdated = value; } }
+        public bool HasPrices { get { return _hasPrices; } set { _hasPrices = value; } }
 
         #region Donation mining settings
 
@@ -262,6 +267,10 @@ namespace MinerControl
                 _donationpercentage = (double)(data["donationpercentage"].ExtractDecimal()) / 100;
             if (data.ContainsKey("donationfrequency"))
                 _donationfrequency = TimeSpan.FromMinutes((double)data["donationfrequency"].ExtractDecimal());
+            if (data.ContainsKey("remotesend"))
+                _remoteSend = bool.Parse(data["remotesend"].ToString());
+            if (data.ContainsKey("remotereceive"))
+                _remoteReceive = bool.Parse(data["remotereceive"].ToString());
         }
 
         private void LoadConfigAlgorithms(object[] data)
@@ -346,7 +355,7 @@ namespace MinerControl
                 _process.StartInfo.Arguments = entry.Arguments;
             }
 
-            WriteConsole(string.Format("Starting {0} {1}", _currentRunning.ServicePrint, _currentRunning.AlgoName), true);
+            WriteConsole(string.Format("Starting {0} {1} with {2} {3}", _currentRunning.ServicePrint, _currentRunning.Name, _process.StartInfo.FileName, _process.StartInfo.Arguments), true);
             if (entry.UseWindow)
             {
                 _process.StartInfo.WindowStyle = (isMinimizedToTray && TrayMode == 2) ? ProcessWindowStyle.Hidden : ProcessWindowStyle.Minimized;

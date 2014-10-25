@@ -102,6 +102,7 @@ namespace MinerControl.PriceEntries
         {
             {"x11", "X11"},
             {"x13", "X13"},
+            {"x14", "X14"},
             {"x15", "X15"},
             {"scrypt", "Scrypt"},
             {"scryptn", "Scrypt-N"},
