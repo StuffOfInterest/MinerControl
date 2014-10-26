@@ -8,7 +8,7 @@ using System.Text;
 
 namespace MinerControl.Utility
 {
-    public class ProcessUtil
+    public static class ProcessUtil
     {
         /// <summary>
         /// Kill a process, and all of its children, grandchildren, etc.
@@ -79,6 +79,23 @@ namespace MinerControl.Utility
         public static void SetWindowTitle(Process process, string title)
         {
             SetWindowText(process.MainWindowHandle, title);
+        }
+
+        /// <summary>
+        /// Safely check if process exists and has not exited.
+        /// </summary>
+        public static bool IsRunning(this Process process)
+        {
+            try
+            {
+                if (process == null || process.HasExited) return false;
+            }
+            catch (InvalidOperationException) // Happens if the process did not launch but object still exists
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

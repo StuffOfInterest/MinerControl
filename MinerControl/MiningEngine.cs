@@ -294,7 +294,11 @@ namespace MinerControl
 
         public void StopMiner()
         {
-            if (_process == null || _process.HasExited) return;
+            if (!_process.IsRunning())
+            {
+                _process = null;
+                return;
+            }
 
             LogActivity(_donationMiningMode == MiningModeEnum.Donation ? "DonationStop" : "Stop");
             WriteConsole(string.Format("Stopping {0} {1}", _currentRunning.ServicePrint, _currentRunning.AlgoName), true);
@@ -356,6 +360,24 @@ namespace MinerControl
             }
 
             WriteConsole(string.Format("Starting {0} {1} with {2} {3}", _currentRunning.ServicePrint, _currentRunning.Name, _process.StartInfo.FileName, _process.StartInfo.Arguments), true);
+
+            if (!string.IsNullOrWhiteSpace(_process.StartInfo.WorkingDirectory) && !Directory.Exists(_process.StartInfo.WorkingDirectory))
+            {
+                entry.DeadTime = DateTime.Now;
+                var message = string.Format("Path '{0}' does not exist.", _process.StartInfo.WorkingDirectory);
+                _process = null;
+                WriteConsole(message, true);
+                throw new ArgumentException(message);
+            }
+            if (!string.IsNullOrWhiteSpace(_process.StartInfo.FileName) && !File.Exists(_process.StartInfo.FileName))
+            {
+                entry.DeadTime = DateTime.Now;
+                var message = string.Format("File '{0}' does not exist.", _process.StartInfo.FileName);
+                _process = null;
+                WriteConsole(message, true);
+                throw new ArgumentException(message);
+            }
+
             if (entry.UseWindow)
             {
                 _process.StartInfo.WindowStyle = (isMinimizedToTray && TrayMode == 2) ? ProcessWindowStyle.Hidden : ProcessWindowStyle.Minimized;
@@ -431,13 +453,13 @@ namespace MinerControl
             try
             {
                 // Check for dead process
-                if (_process != null && _process.HasExited && _currentRunning != null)
+                if (!_process.IsRunning() && _currentRunning != null)
                 {
                     lock (this)
                     {
                         _currentRunning.DeadTime = DateTime.Now;
                         LogActivity(_donationMiningMode == MiningModeEnum.Donation ? "DonationDead" : "Dead");
-                        WriteConsole(string.Format("Dead {0} {1}", _currentRunning.ServicePrint, _currentRunning.AlgoName), true);
+                        WriteConsole(string.Format("Dead {0} {1}", _currentRunning.ServicePrint, _currentRunning.Name), true);
                         RecordMiningTime();
                     }
                 }
