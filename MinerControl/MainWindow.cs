@@ -240,19 +240,16 @@ namespace MinerControl
             return time.FormatTime();
         }
 
+        SlidingBuffer<string> _consoleBuffer = new SlidingBuffer<string>(200);
+
         private void WriteConsole(string text)
         {
             Invoke(new MethodInvoker(
                     delegate
                     {
-                        textConsole.AppendText(text + Environment.NewLine);
-                        int numOfLines = textConsole.Lines.Length - 200;
-                        if (numOfLines <= 0) return;
+                        _consoleBuffer.Add(text);
 
-                        var lines = textConsole.Lines;
-                        var newLines = lines.Skip(numOfLines);
-
-                        textConsole.Lines = newLines.ToArray();
+                        textConsole.Lines = _consoleBuffer.ToArray();
                         textConsole.Focus();
                         textConsole.SelectionStart = textConsole.Text.Length;
                         textConsole.SelectionLength = 0;

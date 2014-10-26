@@ -84,6 +84,7 @@
     <Compile Include="Services\WestHashService.cs" />
     <Compile Include="PriceEntries\YaampPriceEntry.cs" />
     <Compile Include="Services\YaampService.cs" />
+    <Compile Include="Utility\SlidingBuffer.cs" />
     <Compile Include="Utility\SortableBindingList.cs" />
     <Compile Include="Utility\PropertyChangedBase.cs" />
     <Compile Include="Utility\WebUtil.cs" />
