@@ -16,6 +16,8 @@ namespace MinerControl
 {
     public class MiningEngine
     {
+        private const int RemotePortNumber = 12814;
+
         private Process _process;
         private IList<AlgorithmEntry> _algorithmEntries = new List<AlgorithmEntry>();
         private IList<PriceEntryBase> _priceEntries = new List<PriceEntryBase>();
@@ -162,7 +164,7 @@ namespace MinerControl
 
         private bool _remoteSend;
         private bool _remoteReceive;
-        private IPEndPoint _endPoint = new IPEndPoint(new IPAddress(new byte[] { 224, 0, 0, 214 }), 12814);
+        private IPEndPoint _endPoint = new IPEndPoint(new IPAddress(new byte[] { 239, 14, 10, 30 }), RemotePortNumber);
         private MulticastSender _remoteSender;
         private MulticastReceiver _remoteReceiver;
 
@@ -244,21 +246,19 @@ namespace MinerControl
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Error processing service configuration: '{0}'.", ex.Message), "Miner Control: Config file error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(string.Format("Error processing service configuration: '{0}'.", ex.Message), "Miner Control: Configuration file error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
             if (_remoteSend)
             {
-                _remoteSender = new MulticastSender();
-                _remoteSender.EndPoint = _endPoint;
+                _remoteSender = new MulticastSender(_endPoint, 1);
                 _remoteSender.Start();
             }
 
             if (_remoteReceive)
             {
-                _remoteReceiver = new MulticastReceiver();
-                _remoteReceiver.EndPoint = _endPoint;
+                _remoteReceiver = new MulticastReceiver(_endPoint);
                 _remoteReceiver.DataReceived += ProcessRemoteData;
                 _remoteReceiver.Start();
             }

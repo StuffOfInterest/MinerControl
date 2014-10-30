@@ -13,10 +13,14 @@ namespace MinerControl.Utility.Multicast
     public class MulticastReceiver : IDisposable
     {
         private Thread _listener;
-
-        public IPEndPoint EndPoint { get; set; }
+        private IPEndPoint _endPoint;
 
         public event MulticastDataReceivedEventHandler DataReceived;
+
+        public MulticastReceiver(IPEndPoint endPoint)
+        {
+            _endPoint = endPoint;
+        }
 
         public void Start()
         {
@@ -39,20 +43,20 @@ namespace MinerControl.Utility.Multicast
 
         private void BackgroundListener(Object o)
         {
-            var bindingEndpoint = new IPEndPoint(IPAddress.Any, EndPoint.Port);
+            var bindingEndpoint = new IPEndPoint(IPAddress.Any, _endPoint.Port);
             using (var client = new UdpClient())
             {
                 client.ExclusiveAddressUse = false;
                 client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 client.Client.Bind(bindingEndpoint);
-                client.JoinMulticastGroup(EndPoint.Address);
+                client.JoinMulticastGroup(_endPoint.Address);
 
                 var keepRunning = true;
                 while (keepRunning)
                 {
                     try
                     {
-                        IPEndPoint remote = new IPEndPoint(IPAddress.Any, EndPoint.Port);
+                        IPEndPoint remote = new IPEndPoint(IPAddress.Any, _endPoint.Port);
                         var buffer = client.Receive(ref remote);
                         lock (this)
                         {
@@ -65,7 +69,7 @@ namespace MinerControl.Utility.Multicast
                     }
                 }
 
-                client.DropMulticastGroup(EndPoint.Address);
+                client.DropMulticastGroup(_endPoint.Address);
             }
         }
 

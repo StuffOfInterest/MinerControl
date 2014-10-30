@@ -9,26 +9,32 @@ namespace MinerControl.Utility.Multicast
 {
     public class MulticastSender : IDisposable
     {
+        private IPEndPoint _endPoint;
+        private int _timeToLive;
         private UdpClient _udpClient;
 
-        public IPEndPoint EndPoint { get; set; }
+        public MulticastSender(IPEndPoint endPoint, int timeToLive)
+        {
+            _endPoint = endPoint;
+            _timeToLive = timeToLive;
+        }
 
         public void Start()
         {
             _udpClient = new UdpClient();
-            _udpClient.JoinMulticastGroup(EndPoint.Address);
+            _udpClient.JoinMulticastGroup(_endPoint.Address);
         }
 
         public void Stop()
         {
-            _udpClient.DropMulticastGroup(EndPoint.Address);
+            _udpClient.DropMulticastGroup(_endPoint.Address);
             _udpClient.Close();
             _udpClient = null;
         }
 
         public void Send(byte[] data)
         {
-            _udpClient.Send(data, data.Length, EndPoint);
+            _udpClient.Send(data, data.Length, _endPoint);
         }
 
         public void Send(string data)
