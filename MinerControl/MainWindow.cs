@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Windows.Forms;
 using MinerControl.PriceEntries;
@@ -24,6 +25,7 @@ namespace MinerControl
         public MainWindow()
         {
             _engine.WriteConsoleAction = WriteConsole;
+            _engine.WriteRemoteAction = WriteRemote;
 
             InitializeComponent();
         }
@@ -55,6 +57,9 @@ namespace MinerControl
             }
 
             lblCurrencySymbol.Text = string.Empty;  // Avoid flashing template value when starting
+
+            if (!_engine.RemoteReceive)
+                tabPage.TabPages.Remove(tabRemote);
 
             UpdateButtons();
             RunCycle();
@@ -255,6 +260,25 @@ namespace MinerControl
                         textConsole.SelectionLength = 0;
                         textConsole.ScrollToCaret();
                         textConsole.Refresh();
+                    }
+                ));
+        }
+
+        SlidingBuffer<string> _remoteBuffer = new SlidingBuffer<string>(200);
+        
+        private void WriteRemote(IPAddress source, string text)
+        {
+            Invoke(new MethodInvoker(
+                    delegate
+                    {
+                        _remoteBuffer.Add(string.Format("[{0}] {1}", source, text));
+
+                        textRemote.Lines = _remoteBuffer.ToArray();
+                        textRemote.Focus();
+                        textRemote.SelectionStart = textRemote.Text.Length;
+                        textRemote.SelectionLength = 0;
+                        textRemote.ScrollToCaret();
+                        textRemote.Refresh();
                     }
                 ));
         }

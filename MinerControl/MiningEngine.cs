@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Web.Script.Serialization;
 using System.Windows.Forms;
 using MinerControl.PriceEntries;
 using MinerControl.Services;
 using MinerControl.Utility;
+using MinerControl.Utility.Multicast;
 
 namespace MinerControl
 {
@@ -31,8 +33,6 @@ namespace MinerControl
         private TimeSpan _deadtime;
         private int? _nextRun;                    // Next algo to run
         private DateTime? _nextRunFromTime;       // When the next run algo became best
-        private bool _remoteSend;
-        private bool _remoteReceive;
 
         public MiningModeEnum MiningMode { get; set; }
 
@@ -158,6 +158,18 @@ namespace MinerControl
 
         #endregion
 
+        #region Remote console
+
+        private bool _remoteSend;
+        private bool _remoteReceive;
+        private IPEndPoint _endPoint = new IPEndPoint(new IPAddress(new byte[] { 224, 0, 0, 214 }), 12814);
+        private MulticastSender _remoteSender;
+        private MulticastReceiver _remoteReceiver;
+
+        public bool RemoteReceive { get { return _remoteReceive; } }
+
+        #endregion
+
         public MiningEngine()
         {
             MinerKillMode = 1;
@@ -165,7 +177,8 @@ namespace MinerControl
             MiningMode = MiningModeEnum.Stopped;
         }
 
-        public void Cleanup(){
+        public void Cleanup()
+        {
             WriteConsoleAction = null;
 
             if (_currentRunning != null && _currentRunning.UseWindow == false)
@@ -173,6 +186,12 @@ namespace MinerControl
 
             if (_process != null)
                 _process.Dispose();
+
+            if (_remoteSender != null)
+                _remoteSender.Dispose();
+
+            if (_remoteReceiver != null)
+                _remoteReceiver.Dispose();
         }
 
         public bool LoadConfig()
@@ -227,6 +246,21 @@ namespace MinerControl
             {
                 MessageBox.Show(string.Format("Error processing service configuration: '{0}'.", ex.Message), "Miner Control: Config file error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
+            }
+
+            if (_remoteSend)
+            {
+                _remoteSender = new MulticastSender();
+                _remoteSender.EndPoint = _endPoint;
+                _remoteSender.Start();
+            }
+
+            if (_remoteReceive)
+            {
+                _remoteReceiver = new MulticastReceiver();
+                _remoteReceiver.EndPoint = _endPoint;
+                _remoteReceiver.DataReceived += ProcessRemoteData;
+                _remoteReceiver.Start();
             }
 
             return true;
@@ -641,12 +675,41 @@ namespace MinerControl
                 text = string.Format("[{0:HH:mm:ss}] {1}", DateTime.Now, text);
 
             WriteConsoleAction(text);
+
+            if (_remoteSender == null) return;
+            text = string.Format("{0} {1}", "CON", text);
+            _remoteSender.Send(text);
         }
 
         private void ProcessConsoleOutput(object sender, DataReceivedEventArgs e)
         {
             if (e.Data == null) return;
             WriteConsole(e.Data);
+        }
+
+        public Action<IPAddress, string> WriteRemoteAction { get; set; }
+
+        private void ProcessRemoteData(object sender, MulticastDataReceivedEventArgs e)
+        {
+            if (WriteRemoteAction == null) return;
+
+            try
+            {
+                var data = e.StringData;
+                var command = data.Substring(0, 4);
+                var body = data.Substring(4);
+
+                switch (command)
+                {
+                    case "CON ":
+                        WriteRemoteAction(e.RemoteEndPoint.Address, body);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLogger.Log(ex);
+            }
         }
 
         #endregion

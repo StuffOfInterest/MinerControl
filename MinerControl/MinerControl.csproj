@@ -74,6 +74,9 @@
     <Compile Include="Services\NiceHashServiceBase.cs" />
     <Compile Include="PriceEntries\PriceEntryBase.cs" />
     <Compile Include="Services\WafflePoolService.cs" />
+    <Compile Include="Utility\Multicast\MulticastDataReceivedEventArgs.cs" />
+    <Compile Include="Utility\Multicast\MulticastReceiver.cs" />
+    <Compile Include="Utility\Multicast\MulticastSender.cs" />
     <Compile Include="Utility\ProcessUtil.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
