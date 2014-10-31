@@ -21,8 +21,13 @@ namespace MinerControl.Utility.Multicast
 
         public void Start()
         {
+            var bindingEndpoint = new IPEndPoint(IPAddress.Any, _endPoint.Port);
+
             _udpClient = new UdpClient();
-            _udpClient.JoinMulticastGroup(_endPoint.Address);
+            _udpClient.ExclusiveAddressUse = false;
+            _udpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+            _udpClient.Client.Bind(bindingEndpoint);
+            _udpClient.JoinMulticastGroup(_endPoint.Address, _timeToLive);
         }
 
         public void Stop()
