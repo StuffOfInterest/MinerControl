@@ -37,7 +37,7 @@ namespace MinerControl.Utility.Multicast
             lock (this)
             {
                 _listener.Abort();
-                Thread.Sleep(100);
+                _listener.Join();
             }
         }
 
@@ -66,6 +66,7 @@ namespace MinerControl.Utility.Multicast
                     catch (ThreadAbortException)
                     {
                         keepRunning = false;
+                        Thread.ResetAbort();
                     }
                 }
 
