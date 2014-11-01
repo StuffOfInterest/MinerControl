@@ -24,8 +24,7 @@ namespace MinerControl.Utility.Multicast
 
         public void Start()
         {
-            var threadDetail = new ParameterizedThreadStart(BackgroundListener);
-            _listener = new Thread(threadDetail)
+            _listener = new Thread(new ThreadStart(BackgroundListener))
             {
                 IsBackground = true
             };
@@ -41,7 +40,7 @@ namespace MinerControl.Utility.Multicast
             }
         }
 
-        private void BackgroundListener(Object o)
+        private void BackgroundListener()
         {
             var bindingEndpoint = new IPEndPoint(IPAddress.Any, _endPoint.Port);
             using (var client = new UdpClient())

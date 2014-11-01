@@ -18,9 +18,7 @@ namespace MinerControl.Utility.Multicast
         }
 
         public IPEndPoint RemoteEndPoint { get { return _remote; } }
-
         public byte[] Data { get { return _data; } }
-
         public string StringData { get { return Encoding.Unicode.GetString(_data); } }
     }
 }
