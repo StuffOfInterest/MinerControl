@@ -36,7 +36,7 @@ namespace MinerControl.Utility.Multicast
             lock (this)
             {
                 _listener.Abort();
-                _listener.Join();
+                _listener.Join(500);
             }
         }
 
