@@ -116,7 +116,8 @@ namespace MinerControl.Services
             {"keccak", 5},
             {"sha256", 1},
             {"x15", 6},
-            {"nist5", 7}
+            {"nist5", 7},
+            {"neoscrypt", 8}
         };
 
         private int GetAgorithmId(string algorithmName)

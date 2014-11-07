@@ -108,7 +108,9 @@ namespace MinerControl.PriceEntries
             {"scryptn", "Scrypt-N"},
             {"sha256", "SHA256"},
             {"nist5", "Nist5"},
-            {"keccak", "Keccak"}
+            {"keccak", "Keccak"},
+            {"quark", "Quark"},
+            {"neoscrypt", "NeoScrypt"}
         };
 
         private string GetAlgoDisplayName(string rawname)
