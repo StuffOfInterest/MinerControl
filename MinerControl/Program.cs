@@ -10,6 +10,7 @@ namespace MinerControl
     {
         public static bool HasAutoStart { get; set; }
         public static bool MinimizeToTray { get; set; }
+        public static bool MinimizeOnStart { get; set; }
 
         /// <summary>
         /// The main entry point for the application.
@@ -29,6 +30,10 @@ namespace MinerControl
                     case "-t":
                     case "--minimize-to-tray":
                         MinimizeToTray = true;
+                        break;
+                    case "-m":
+                    case "--minimize":
+                        MinimizeOnStart = true;
                         break;
                 }
             }

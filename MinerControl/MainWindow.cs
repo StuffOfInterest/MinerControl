@@ -65,6 +65,9 @@ namespace MinerControl
             RunCycle();
             UpdateGrid(true);
 
+            if (Program.MinimizeOnStart)
+                MinimizeWindow();
+
             tmrPriceCheck.Enabled = true;
             if (!string.IsNullOrWhiteSpace(_engine.CurrencyCode))
                 tmrExchangeUpdate.Enabled = true;
@@ -197,6 +200,27 @@ namespace MinerControl
 
         #region Show/hide window
 
+        private void MinimizeWindow()
+        {
+            if (_engine.TrayMode == 0)
+            {
+                this.WindowState = FormWindowState.Minimized;
+            }
+            else
+            {
+                HideWindow();
+            }
+        }
+
+        private void HideWindow()
+        {
+            notifyIcon.Visible = true;
+            notifyIcon.ShowBalloonTip(500);
+            this.Hide();
+
+            _engine.HideMinerWindow();
+        }
+
         private void notifyIcon_DoubleClick(object sender, EventArgs e)
         {
             notifyIcon.Visible = false;
@@ -210,14 +234,10 @@ namespace MinerControl
         {
             if (_engine.TrayMode > 0 && this.WindowState == FormWindowState.Minimized)
             {
-                notifyIcon.Visible = true;
-                notifyIcon.ShowBalloonTip(500);
-                this.Hide();
-
-                _engine.HideMinerWindow();
+                HideWindow();
             }
         }
-
+       
         #endregion
 
         private void UpdateTimes()
