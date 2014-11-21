@@ -13,6 +13,7 @@ namespace MinerControl
         YAAMP,
         WafflePool,
         LTCRabbit,
+        WePayBTC,
         Manual
     }
 }

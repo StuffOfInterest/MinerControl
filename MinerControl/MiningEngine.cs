@@ -238,6 +238,7 @@ namespace MinerControl
                 LoadService(new YaampService(), data, "yaamp");
                 LoadService(new WafflePoolService(), data, "wafflepool");
                 LoadService(new LtcRabbitService(), data, "ltcrabbit");
+                LoadService(new WePayBtcService(), data, "wepaybtc");
                 LoadService(new ManualService(), data, "manual");
 
                 // Set Id for each entry
