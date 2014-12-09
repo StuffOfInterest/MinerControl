@@ -14,6 +14,7 @@ namespace MinerControl
         WafflePool,
         LTCRabbit,
         WePayBTC,
+        HamsterPool,
         Manual
     }
 }

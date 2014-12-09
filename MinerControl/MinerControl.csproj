@@ -51,8 +51,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlgorithmEntry.cs" />
+    <Compile Include="PriceEntries\HamsterPoolPriceEntry.cs" />
     <Compile Include="PriceEntries\LtcRabbitPriceEntry.cs" />
     <Compile Include="PriceEntries\WePayBtcPriceEntry.cs" />
+    <Compile Include="Services\HamsterPoolService.cs" />
     <Compile Include="Services\LtcRabbitService.cs" />
     <Compile Include="Services\WePayBtcService.cs" />
     <Compile Include="Utility\ErrorLogger.cs" />
