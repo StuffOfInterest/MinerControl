@@ -93,6 +93,8 @@ namespace MinerControl.Services
                     entry.Balance = balance;
                 }
 
+                Balance = PriceEntries.Sum(o => o.Balance);
+
                 MiningEngine.PricesUpdated = true;
                 MiningEngine.HasPrices = true;
 
