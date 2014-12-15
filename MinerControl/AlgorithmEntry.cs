@@ -4,6 +4,7 @@ namespace MinerControl
     public class AlgorithmEntry
     {
         public string Name { get; set; }
+        public string Display { get; set; }
         public decimal Hashrate { get; set; }
         public decimal Power { get; set; }
 

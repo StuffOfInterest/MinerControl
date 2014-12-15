@@ -17,7 +17,7 @@ namespace MinerControl.PriceEntries
         public int Id { get; set; }
         public IService ServiceEntry { get; set; }
         public string AlgoName { get; set; }
-        public string Name { get { return GetAlgoDisplayName(AlgoName); } }
+        public string Name { get; set; }
         public bool UseWindow { get; set; }
 
         public decimal Hashrate { get; set; }
@@ -95,31 +95,5 @@ namespace MinerControl.PriceEntries
             OnPropertyChanged(() => PowerCost);
             OnPropertyChanged(() => NetEarn);
         }
-
-        #region Helpers
-
-        private readonly IDictionary<string, string> _algoNames = new Dictionary<string, string>
-        {
-            {"x11", "X11"},
-            {"x13", "X13"},
-            {"x14", "X14"},
-            {"x15", "X15"},
-            {"scrypt", "Scrypt"},
-            {"scryptn", "Scrypt-N"},
-            {"sha256", "SHA256"},
-            {"nist5", "Nist5"},
-            {"keccak", "Keccak"},
-            {"quark", "Quark"},
-            {"neoscrypt", "NeoScrypt"}
-        };
-
-        private string GetAlgoDisplayName(string rawname)
-        {
-            if (_algoNames.ContainsKey(rawname))
-                return _algoNames[rawname];
-            return rawname;
-        }
-
-        #endregion
     }
 }

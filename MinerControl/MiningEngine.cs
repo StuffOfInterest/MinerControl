@@ -317,6 +317,7 @@ namespace MinerControl
                 var entry = new AlgorithmEntry
                 {
                     Name = item["name"] as string,
+                    Display = item.ContainsKey("display") ? item["display"] as string : GetAlgoDisplayName(item["name"] as string),
                     Hashrate = item["hashrate"].ExtractDecimal(),
                     Power = item["power"].ExtractDecimal(),
                     Param1 = item.GetString("aparam1") ?? string.Empty,
@@ -712,6 +713,32 @@ namespace MinerControl
             {
                 ErrorLogger.Log(ex);
             }
+        }
+
+        #endregion
+
+        #region Helpers
+
+        private readonly IDictionary<string, string> _algoNames = new Dictionary<string, string>
+        {
+            {"x11", "X11"},
+            {"x13", "X13"},
+            {"x14", "X14"},
+            {"x15", "X15"},
+            {"scrypt", "Scrypt"},
+            {"scryptn", "Scrypt-N"},
+            {"sha256", "SHA256"},
+            {"nist5", "Nist5"},
+            {"keccak", "Keccak"},
+            {"quark", "Quark"},
+            {"neoscrypt", "NeoScrypt"}
+        };
+
+        private string GetAlgoDisplayName(string rawname)
+        {
+            if (_algoNames.ContainsKey(rawname))
+                return _algoNames[rawname];
+            return rawname;
         }
 
         #endregion

@@ -114,6 +114,7 @@ namespace MinerControl.Services
 
             entry.AlgoName = item.GetString("algo");
             var algo = MiningEngine.AlgorithmEntries.Single(o => o.Name == entry.AlgoName);
+            entry.Name = algo.Display;
             entry.Hashrate = algo.Hashrate;
             entry.Power = algo.Power;
             entry.Weight = _weight;
