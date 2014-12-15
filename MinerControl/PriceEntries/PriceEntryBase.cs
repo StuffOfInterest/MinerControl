@@ -16,6 +16,7 @@ namespace MinerControl.PriceEntries
         public MiningEngine MiningEngine { get; set; }
         public int Id { get; set; }
         public IService ServiceEntry { get; set; }
+        public string PriceId { get; set; }
         public string AlgoName { get; set; }
         public string Name { get; set; }
         public bool UseWindow { get; set; }

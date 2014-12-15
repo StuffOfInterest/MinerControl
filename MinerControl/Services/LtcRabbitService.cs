@@ -49,7 +49,7 @@ namespace MinerControl.Services
             foreach (var rawitem in items)
             {
                 var item = rawitem as Dictionary<string, object>;
-                var entry = GetEntry(item);
+                var entry = CreateEntry(item);
 
                 Add(entry);
             }
@@ -76,7 +76,7 @@ namespace MinerControl.Services
                     var item = rawitem as Dictionary<string, object>;
                     var algo = key.ToLower();
 
-                    var entry = PriceEntries.FirstOrDefault(o => o.AlgoName == algo);
+                    var entry = GetEntry(algo);
                     if (entry == null) continue;
 
                     entry.Price = item["btc_mh"].ExtractDecimal() * 1000;
@@ -98,14 +98,14 @@ namespace MinerControl.Services
             var user = getappdata["user"] as Dictionary<string, object>;
             Balance = user["balance_btc"].ExtractDecimal();
 
-            var entry = PriceEntries.FirstOrDefault(o => o.AlgoName == "x11");
+            var entry = GetEntry("x11");
             if (entry != null)
             {
                 var hashrate = user["hashrate_x11"].ExtractDecimal();
                 entry.AcceptSpeed = hashrate / 1000;
             }
 
-            entry = PriceEntries.FirstOrDefault(o => o.AlgoName == "scrypt");
+           entry = GetEntry("scrypt");
             if (entry != null)
             {
                 var hashrate = user["hashrate_scrypt"].ExtractDecimal();

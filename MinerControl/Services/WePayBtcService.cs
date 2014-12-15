@@ -33,7 +33,7 @@ namespace MinerControl.Services
             foreach (var rawitem in items)
             {
                 var item = rawitem as Dictionary<string, object>;
-                var entry = GetEntry(item);
+                var entry = CreateEntry(item);
 
                 Add(entry);
             }
@@ -57,7 +57,7 @@ namespace MinerControl.Services
                     var item = rawitem as Dictionary<string, object>;
                     var algo = key.ToLower();
 
-                    var entry = PriceEntries.FirstOrDefault(o => o.AlgoName == algo);
+                    var entry = GetEntry(algo);
                     if (entry == null) continue;
 
                     entry.Price = data[key].ExtractDecimal() * 1000;

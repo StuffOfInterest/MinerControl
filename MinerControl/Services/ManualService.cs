@@ -21,7 +21,7 @@ namespace MinerControl.Services
             foreach (var rawitem in items)
             {
                 var item = rawitem as Dictionary<string, object>;
-                var entry = GetEntry(item);
+                var entry = CreateEntry(item);
 
                 if (item.ContainsKey("price"))
                     entry.Price = item["price"].ExtractDecimal();

@@ -106,7 +106,7 @@ namespace MinerControl.Services
                 .Replace("_APARAM3_", algo.Param3);
         }
 
-        protected TEntry GetEntry(Dictionary<string, object> item)
+        protected TEntry CreateEntry(Dictionary<string, object> item)
         {
             var entry = new TEntry();
             entry.MiningEngine = MiningEngine;
@@ -115,6 +115,7 @@ namespace MinerControl.Services
             entry.AlgoName = item.GetString("algo");
             var algo = MiningEngine.AlgorithmEntries.Single(o => o.Name == entry.AlgoName);
             entry.Name = algo.Display;
+            entry.PriceId = item.GetString("priceid");
             entry.Hashrate = algo.Hashrate;
             entry.Power = algo.Power;
             entry.Weight = _weight;
@@ -138,10 +139,15 @@ namespace MinerControl.Services
             MiningEngine.PriceEntries.Add(entry);
         }
 
-        protected string GetAlgoName(string name)
+        private string GetAlgoName(string name)
         {
             if (AlgoTranslations == null || !AlgoTranslations.ContainsKey(name)) return name;
             return AlgoTranslations[name];
+        }
+
+        protected TEntry GetEntry(string algo)
+        {
+            return PriceEntries.FirstOrDefault(o => (o.PriceId != null && o.PriceId == algo) || (o.PriceId == null && o.AlgoName == GetAlgoName(algo)));
         }
 
         protected void ClearStalePrices()

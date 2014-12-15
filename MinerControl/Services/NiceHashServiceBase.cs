@@ -25,8 +25,9 @@ namespace MinerControl.Services
             foreach (var rawitem in items)
             {
                 var item = rawitem as Dictionary<string, object>;
-                var entry = GetEntry(item);
-                entry.AlgorithmId = GetAgorithmId(entry.AlgoName);
+                var entry = CreateEntry(item);
+                if (string.IsNullOrWhiteSpace(entry.PriceId))
+                    entry.PriceId = GetAgorithmId(entry.AlgoName).ToString();
 
                 Add(entry);
             }
@@ -50,8 +51,8 @@ namespace MinerControl.Services
                 foreach (var stat in stats)
                 {
                     var item = stat as Dictionary<string, object>;
-                    var algo = item["algo"] as int?;
-                    var entry = PriceEntries.FirstOrDefault(o => o.AlgorithmId == algo);
+                    var algo = item["algo"].ToString();
+                    var entry = GetEntry(algo);
                     if (entry == null) continue;
 
                     entry.Price = item["price"].ExtractDecimal();
@@ -83,8 +84,8 @@ namespace MinerControl.Services
             {
                 var item = stat as Dictionary<string, object>;
                 totalBalance += item["balance"].ExtractDecimal();
-                var algo = int.Parse(item["algo"].ToString());
-                var entry = PriceEntries.FirstOrDefault(o => o.AlgorithmId == algo);
+                var algo = item.GetString("algo");
+                var entry = GetEntry(algo);
                 if (entry == null) continue;
 
                 entry.Balance = item["balance"].ExtractDecimal();

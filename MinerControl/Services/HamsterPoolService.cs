@@ -40,7 +40,7 @@ namespace MinerControl.Services
             foreach (var rawitem in items)
             {
                 var item = rawitem as Dictionary<string, object>;
-                var entry = GetEntry(item);
+                var entry = CreateEntry(item);
                 entry.Donation = _donation;
                 
                 Add(entry);
@@ -64,7 +64,7 @@ namespace MinerControl.Services
                     var algo = key.ToLower();
                     var price = data[key].ExtractDecimal();
 
-                    var entry = PriceEntries.FirstOrDefault(o => o.AlgoName == GetAlgoName(algo));
+                    var entry = GetEntry(algo);
                     if (entry == null) continue;
 
                     entry.Price = price * 1000;
@@ -87,7 +87,7 @@ namespace MinerControl.Services
                     var algo = key.ToLower();
                     var balance = data[key].ExtractDecimal();
 
-                    var entry = PriceEntries.FirstOrDefault(o => o.AlgoName == GetAlgoName(algo));
+                    var entry = GetEntry(algo);
                     if (entry == null) continue;
 
                     entry.Balance = balance;
