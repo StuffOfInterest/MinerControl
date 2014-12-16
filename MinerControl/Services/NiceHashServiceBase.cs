@@ -84,7 +84,7 @@ namespace MinerControl.Services
             {
                 var item = stat as Dictionary<string, object>;
                 totalBalance += item["balance"].ExtractDecimal();
-                var algo = item.GetString("algo");
+                var algo = item["algo"].ToString();
                 var entry = GetEntry(algo);
                 if (entry == null) continue;
 

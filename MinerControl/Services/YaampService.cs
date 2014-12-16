@@ -76,7 +76,7 @@ namespace MinerControl.Services
                 var miners = data["miners"] as Dictionary<string, object>;
                 foreach (var key in miners.Keys)
                 {
-                    var entry = PriceEntries.Where(o => o.AlgoName == key).FirstOrDefault();
+                    var entry = GetEntry(key.ToLower());
                     if (entry == null) continue;
                     var item = miners[key] as Dictionary<string, object>;
                     entry.AcceptSpeed = item["hashrate"].ExtractDecimal() / 1000000;
