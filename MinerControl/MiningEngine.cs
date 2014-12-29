@@ -607,7 +607,7 @@ namespace MinerControl
 
         public void LoadExchangeRates()
         {
-            WebUtil.DownloadJson("http://blockchain.info/ticker ", ProcessExchangeRates);
+            WebUtil.DownloadJson("http://blockchain.info/ticker", ProcessExchangeRates);
         }
 
         private void ProcessExchangeRates(object jsonData)
